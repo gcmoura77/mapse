@@ -1,0 +1,19 @@
+  <!-- Modal Escolha do Perfil -->
+  <div class="modal fade" id="escolhaPerfil" tabindex="-1" aria-labelledby="escolhaPerfilLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="escolhaPerfilLabel">Explore nossos acessos</h2>
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+        </div>
+        <div class="modal-body">
+          <p>Escolha o perfil desejado para acessar</p>
+        </div>
+        <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+          <a type="button" class="btn btn-outline-primary mb-0" href="{% url 'register' 'paciente' %}">Paciente</a>
+          <a type="button" class="btn btn-outline-primary mb-0" href="{% url 'register' 'especialista' %}">Especialista</a>
+          <a type="button" class="btn btn-outline-primary mb-0" href="{% url 'register' 'empresa' %}">Empresa</a>
+        </div>
+      </div>
+    </div>
+  </div>

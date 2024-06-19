@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "home",
 ]
 
@@ -70,11 +69,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 UI_TEMPLATES = os.path.join(BASE_DIR, 'templates')
+HOME_TEMPLATES = os.path.join(BASE_DIR, 'home/templates')
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [UI_TEMPLATES],
+        "DIRS": [UI_TEMPLATES,HOME_TEMPLATES],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -143,7 +143,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 
