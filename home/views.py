@@ -20,8 +20,16 @@ def register(request, perfil='paciente'):
     mensagem = ""
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        if form.is_valid():
+        if perfil == 'empresa':
+            perfil_form = EmpresaForm(request.POST)
+        elif perfil == 'especialista':
+            perfil_form = EspecialistaForm(request.POST)
+        else:
+            perfil_form = PessoaForm(request.POST)
+
+        if form.is_valid() and perfil_form.is_valid:
             form.save()
+            perfil_form.save()
             print('Conta criada com sucesso!')
             return redirect('/accounts/login/')
         else:

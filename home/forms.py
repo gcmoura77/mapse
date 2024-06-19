@@ -39,15 +39,15 @@ class EspecialistaForm(forms.ModelForm):
                 'placeholder': 'CPF'
             }),
             'data_nascimento': forms.DateInput(attrs={
-                'class': 'form-control datepicker',
+                'class': 'form-control',
                 'placeholder': 'Data de Nascimento',
-                'type' : 'date'                
+                'type' : 'text',
             }),            
-            'conselho_profissional': forms.NumberInput(attrs={
+            'conselho_profissional': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Conselho Profissional'
             }),
-            'numero_conselho': forms.TextInput(attrs={
+            'numero_conselho': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Número do Conselho'
             }),
