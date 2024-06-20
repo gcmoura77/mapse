@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from admin_material.forms import RegistrationForm
+from django.contrib import messages
 
 from home.models import especialista
 from .forms import EmpresaForm, EspecialistaForm, PessoaForm
@@ -27,11 +28,15 @@ def register(request, perfil='paciente'):
         else:
             perfil_form = PessoaForm(request.POST)
 
-        if form.is_valid() and perfil_form.is_valid:
-            form.save()
-            perfil_form.save()
+        if all([form.is_valid(),  perfil_form.is_valid]):
+            usuario_salvo = form.save()
+            perfil_salvo = perfil_form.save(commit=False)
+            perfil_salvo.login = usuario_salvo
+            perfil_salvo.email = usuario_salvo.email
+            perfil_salvo.save()
             print('Conta criada com sucesso!')
-            return redirect('/accounts/login/')
+            messages.success(request, 'Conta criada com sucesso!')
+            return redirect('/')
         else:
             mensagem = "Cadastro não realizado!"
             print("Cadastro não realizado!")
