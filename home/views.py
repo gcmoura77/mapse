@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from admin_material.forms import RegistrationForm
+from admin_material.forms import RegistrationForm, LoginForm, UserPasswordResetForm, UserPasswordChangeForm
 from django.contrib import messages
+from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
+from django.contrib.auth import logout
 
-from home.models import especialista
 from .forms import EmpresaForm, EspecialistaForm, PessoaForm
 
 # Create your views here.
@@ -55,6 +55,40 @@ def register(request, perfil='paciente'):
                 'msg': mensagem }    
     return render(request, 'accounts/register.html', context)
 
+@login_required
 def dashboard(request):
     # Page from the theme 
     return render(request, 'pages/index.html')
+
+@login_required
+def billing(request):
+  return render(request, 'pages/billing.html', { 'segment': 'billing' })
+
+@login_required
+def tables(request):
+  return render(request, 'pages/tables.html', { 'segment': 'tables' })
+
+@login_required
+def notification(request):
+  return render(request, 'pages/notifications.html', { 'segment': 'notification' })
+
+@login_required
+def profile(request):
+  return render(request, 'pages/profile.html', { 'segment': 'perfil' })
+
+# Authentication
+class UserLoginView(LoginView):
+  template_name = 'accounts/login.html'
+  form_class = LoginForm
+  
+class UserPasswordResetView(PasswordResetView):
+  template_name = 'accounts/password_reset.html'
+  form_class = UserPasswordResetForm
+  
+def logout_view(request):
+  logout(request)
+  return redirect('/accounts/login/')
+
+class UserPasswordChangeView(PasswordChangeView):
+  template_name = 'accounts/password_change.html'
+  form_class = UserPasswordChangeForm
