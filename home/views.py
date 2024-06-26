@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout
 
+from home.admin import EspecialistaAdmin
+
+from .models import Pessoa, Empresa, Especialista
 from .forms import EmpresaForm, EspecialistaForm, PessoaForm
 
 # Create your views here.
@@ -74,7 +77,23 @@ def notification(request):
 
 @login_required
 def profile(request):
-  return render(request, 'pages/profile.html', { 'segment': 'perfil' })
+  
+  pessoa = Pessoa.objects.get(login = request.user)
+  if pessoa:
+    tipo_perfil = 'pessoa'
+    nome = pessoa.nome    
+  else:
+    empresa = Empresa.objects.get(login = request.user)
+    if empresa:
+      tipo_perfil = 'empresa'
+      nome = empresa.razao_social
+    else:
+      especialista = Especialista.objects.get(login = request.user)
+      nome = especialista.nome
+      tipo_perfil = 'especialista'
+  
+  return render(request, 'profile.html', { 'segment': 'perfil','tipo_perfil': tipo_perfil, 'nome': nome})
+
 
 # Authentication
 class UserLoginView(LoginView):
@@ -92,3 +111,4 @@ def logout_view(request):
 class UserPasswordChangeView(PasswordChangeView):
   template_name = 'accounts/password_change.html'
   form_class = UserPasswordChangeForm
+  

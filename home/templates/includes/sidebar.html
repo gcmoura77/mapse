@@ -63,8 +63,9 @@
       {% if request.user.is_authenticated and request.user.is_superuser %}
 
         <div class="mx-3">
-          <a class="btn bg-secondary text-white mt-4 w-100" target="_blank" 
-            href="{% url 'admin:index' %}" type="button">Dashboard</a>
+          <a class="btn bg-secondary text-white mt-4 w-100" href="{% url 'admin:index' %}" type="button">
+            Dashboard
+          </a>
         </div>
 
       {% endif %}
