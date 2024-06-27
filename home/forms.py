@@ -10,7 +10,7 @@ class PerfilForm(forms.ModelForm):
         widgets = {
             'nome': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Seu Nome'
+                'placeholder': 'Nome'
             }),
         }       
 

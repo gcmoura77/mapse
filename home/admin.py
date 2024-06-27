@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
@@ -12,7 +13,8 @@ class PessoaAdmin(admin.ModelAdmin):
   
 @admin.register(Perfil)
 class PerfilAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'login', 'tipo_perfil')  
+    list_display = ('nome', 'login', 'tipo_perfil', 'created', 'modified')
+
 
 @admin.register(Especialista)
 class EspecialistaAdmin(admin.ModelAdmin):

@@ -8,6 +8,7 @@ urlpatterns = [
     path("accounts/register/<str:perfil>/", views.register, name='register'),
     path('accounts/register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
     # páginas de autenticação
     path('accounts/login/', views.UserLoginView.as_view(), name='login'),
     path('accounts/password-reset/', views.UserPasswordResetView.as_view(), name='password_reset'),

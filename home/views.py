@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout
 
-from .models import Perfil, Empresa, Especialista
+from .models import Perfil, Empresa, Especialista, Pessoa
 from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm
 
 # Create your views here.
@@ -70,39 +70,88 @@ def dashboard(request):
 
 @login_required
 def billing(request):
-  return render(request, 'pages/billing.html', { 'segment': 'billing' })
+    return render(request, 'pages/billing.html', { 'segment': 'billing' })
 
 @login_required
 def tables(request):
-  return render(request, 'pages/tables.html', { 'segment': 'tables' })
+    return render(request, 'pages/tables.html', { 'segment': 'tables' })
 
 @login_required
 def notification(request):
-  return render(request, 'pages/notifications.html', { 'segment': 'notification' })
+    return render(request, 'pages/notifications.html', { 'segment': 'notification' })
 
 @login_required
 def profile(request):
-  
-  perfil = Perfil.objects.get(login = request.user)
-  nome = perfil.nome    
-  
-  return render(request, 'profile.html', { 'segment': 'perfil','tipo_perfil': perfil.tipo_perfil, 'nome': nome})
+    perfil = Perfil.objects.get(login = request.user)
+    if perfil.tipo_perfil == 'Empresa':
+        perfil_especifico = Empresa.objects.get(perfil=perfil)
+        subtitulo = perfil_especifico.razao_social
+    elif perfil.tipo_perfil == 'Pessoa':
+        perfil_especifico = Pessoa.objects.get(perfil=perfil)
+        subtitulo = perfil_especifico.titulo
+    else:
+        perfil_especifico = Especialista.objects.get(perfil=perfil)
+        subtitulo = f'{perfil_especifico.conselho_profissional} {str(perfil_especifico.numero_conselho)}'
+
+    if request.method == 'POST':
+        form = PerfilForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()    
+            return redirect('profile/')
+    
+    if perfil.imagem:
+        imagem_perfil = perfil.imagem.url
+    else:
+        imagem_perfil = ''
+    
+
+    
+    context = { 'segment': 'perfil',
+                'tipo_perfil': perfil.tipo_perfil, 
+                'nome': perfil.nome, 
+                'celular': perfil_especifico.celular,
+                'email_contato': perfil_especifico.email_contato,
+                'cidade': perfil_especifico.cidade,
+                'facebook': perfil_especifico.facebook,
+                'x_twitter': perfil_especifico.x_twitter,
+                'instagram': perfil_especifico.instagram,
+                'descricao': perfil.descricao,
+                'subtitulo': subtitulo,
+                'imageURL': imagem_perfil,
+            }
+    return render(request, 'profile.html', context)
+
+@login_required
+def profile_edit(request):
+    context = { 'segment': 'perfil',
+            'tipo_perfil': 'perfil.tipo_perfil', 
+            'nome': 'edicao', 
+            'celular': 'celuar',
+            'e_mail': 'perfil_especifico.email_contato',
+            'cidade': 'perfil_especifico.cidade',
+            'facebook': 'perfil_especifico.facebook',
+            'x_twitter': 'perfil_especifico.x_twitter',
+            'instagram': 'perfil_especifico.instagram',
+            'descricao': 'perfil.descricao',
+            'subtitulo': 'subtitulo',
+        }
+    return render(request, 'profile.html', context)
 
 
 # Authentication
 class UserLoginView(LoginView):
-  template_name = 'accounts/login.html'
-  form_class = LoginForm
+    template_name = 'accounts/login.html'
+    form_class = LoginForm
   
 class UserPasswordResetView(PasswordResetView):
-  template_name = 'accounts/password_reset.html'
-  form_class = UserPasswordResetForm
+    template_name = 'accounts/password_reset.html'
+    form_class = UserPasswordResetForm
   
 def logout_view(request):
-  logout(request)
-  return redirect('/accounts/login/')
+    logout(request)
+    return redirect('/accounts/login/')
 
 class UserPasswordChangeView(PasswordChangeView):
-  template_name = 'accounts/password_change.html'
-  form_class = UserPasswordChangeForm
+    template_name = 'accounts/password_change.html'
+    form_class = UserPasswordChangeForm
   

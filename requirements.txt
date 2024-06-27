@@ -18,6 +18,7 @@ nest-asyncio==1.6.0
 packaging==24.0
 parso==0.8.4
 pexpect==4.9.0
+Pillow
 platformdirs==4.2.2
 prompt_toolkit==3.0.47
 psutil==5.9.8
