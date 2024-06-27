@@ -5,10 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout
 
-from home.admin import EspecialistaAdmin
-
-from .models import Pessoa, Empresa, Especialista
-from .forms import EmpresaForm, EspecialistaForm, PessoaForm
+from .models import Perfil, Empresa, Especialista
+from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm
 
 # Create your views here.
 
@@ -23,7 +21,8 @@ def register(request, perfil='paciente'):
     
     mensagem = ""
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        reg_form = RegistrationForm(request.POST)
+        base_perfil_form = PerfilForm(request.POST)
         if perfil == 'empresa':
             perfil_form = EmpresaForm(request.POST)
         elif perfil == 'especialista':
@@ -31,11 +30,15 @@ def register(request, perfil='paciente'):
         else:
             perfil_form = PessoaForm(request.POST)
 
-        if all([form.is_valid(),  perfil_form.is_valid]):
-            usuario_salvo = form.save()
+        if all([reg_form.is_valid(), base_perfil_form.is_valid(), perfil_form.is_valid]):
+            usuario_salvo = reg_form.save()
+            base_perfil_salvo = base_perfil_form.save(commit=False)
+            base_perfil_salvo.tipo_perfil = perfil.capitalize()
+            base_perfil_salvo.login = usuario_salvo
+            base_perfil_salvo.save()
             perfil_salvo = perfil_form.save(commit=False)
-            perfil_salvo.login = usuario_salvo
-            perfil_salvo.email = usuario_salvo.email
+            perfil_salvo.perfil = base_perfil_salvo
+            perfil_salvo.email_contato = usuario_salvo.email
             perfil_salvo.save()
             print('Conta criada com sucesso!')
             messages.success(request, 'Conta criada com sucesso!')
@@ -44,7 +47,8 @@ def register(request, perfil='paciente'):
             mensagem = "Cadastro não realizado!"
             print("Cadastro não realizado!")
     else:
-        form    = RegistrationForm()
+        reg_form = RegistrationForm()
+        base_perfil_form = PerfilForm()
         if perfil == 'empresa':
             perfil_form = EmpresaForm()
         elif perfil == 'especialista':
@@ -52,8 +56,9 @@ def register(request, perfil='paciente'):
         else:
             perfil_form = PessoaForm()
 
-    context = { 'form': form, 
+    context = { 'form': reg_form, 
                 'perfil':perfil, 
+                'base_perfil_form': base_perfil_form,
                 'perfil_form': perfil_form,
                 'msg': mensagem }    
     return render(request, 'accounts/register.html', context)
@@ -78,21 +83,10 @@ def notification(request):
 @login_required
 def profile(request):
   
-  pessoa = Pessoa.objects.get(login = request.user)
-  if pessoa:
-    tipo_perfil = 'pessoa'
-    nome = pessoa.nome    
-  else:
-    empresa = Empresa.objects.get(login = request.user)
-    if empresa:
-      tipo_perfil = 'empresa'
-      nome = empresa.razao_social
-    else:
-      especialista = Especialista.objects.get(login = request.user)
-      nome = especialista.nome
-      tipo_perfil = 'especialista'
+  perfil = Perfil.objects.get(login = request.user)
+  nome = perfil.nome    
   
-  return render(request, 'profile.html', { 'segment': 'perfil','tipo_perfil': tipo_perfil, 'nome': nome})
+  return render(request, 'profile.html', { 'segment': 'perfil','tipo_perfil': perfil.tipo_perfil, 'nome': nome})
 
 
 # Authentication

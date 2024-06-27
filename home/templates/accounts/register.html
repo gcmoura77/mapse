@@ -46,6 +46,13 @@
                   <div class="card-body">
                       <form role="form" method="post" action="">
                         {% csrf_token %} 
+                        {% for field in base_perfil_form %}
+                        <div class="input-group input-group-outline mb-3">
+                          {{ field }}
+                        </div>
+                        <span class="text-danger">{{ field.errors }}</span>
+                        {% endfor %}
+
                         {% for field in perfil_form %}
                         <div class="input-group input-group-outline mb-3">
                           {{ field }}

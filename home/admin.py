@@ -2,40 +2,34 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Pessoa, Especialista, Empresa
+from .models import Pessoa, Especialista, Empresa, Perfil
 
 # admin.site.register(Pessoa)
 
 @admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'cpf', 'email', 'login')    
-    
-class PessoaInline(admin.StackedInline):
-    model = Pessoa
-    can_delete = False
-    verbose_name_plural = "pessoas"    
+    list_display = ('perfil', 'cpf')    
+  
+@admin.register(Perfil)
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'login', 'tipo_perfil')  
 
 @admin.register(Especialista)
 class EspecialistaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'cpf', 'email', 'conselho_profissional', 'login')
-    
-class EspecialistaInline(admin.StackedInline):
-    model = Especialista
-    can_delete = False
-    verbose_name_plural = "especialistas"       
+    list_display = ('perfil', 'cpf', 'conselho_profissional')
 
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
-    list_display = ('razao_social', 'cnpj', 'email', 'login')
-    
-class EmpresaInline(admin.StackedInline):
-    model = Empresa
+    list_display = ('perfil','razao_social', 'cnpj')
+        
+class PerfilInline(admin.StackedInline):
+    model = Perfil
     can_delete = False
-    verbose_name_plural = "empresas"    
-    
+    verbose_name_plural = "Perfis"    
+  
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
-    inlines = [PessoaInline, EspecialistaInline, EmpresaInline]
+    inlines = [PerfilInline]
 
 # Re-register UserAdmin
 admin.site.unregister(User)

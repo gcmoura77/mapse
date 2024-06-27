@@ -1,17 +1,26 @@
 from django import forms
-from .models import Empresa, Pessoa, Especialista
+from .models import Empresa, Pessoa, Especialista, Perfil
 
-class PessoaForm(forms.ModelForm):
+class PerfilForm(forms.ModelForm):
     
     class Meta:
-        model = Pessoa
-        fields =  ['nome', 'cpf','data_nascimento']
+        model = Perfil
+        fields =  ['nome']
         
         widgets = {
             'nome': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Seu Nome'
             }),
+        }       
+
+class PessoaForm(forms.ModelForm):
+    
+    class Meta:
+        model = Pessoa
+        fields =  ['cpf','data_nascimento']
+        
+        widgets = {
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'CPF'
@@ -27,13 +36,9 @@ class EspecialistaForm(forms.ModelForm):
     
     class Meta:
         model = Especialista
-        fields =  ['nome','cpf','data_nascimento', 'conselho_profissional', 'numero_conselho']
+        fields =  ['cpf','data_nascimento', 'conselho_profissional', 'numero_conselho']
         
         widgets = {
-            'nome': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Seu Nome'
-            }),
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'CPF'
@@ -62,7 +67,7 @@ class EmpresaForm(forms.ModelForm):
         widgets = {
             'razao_social': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Nome da Empresa'
+                'placeholder': 'Razão Social'
             }),
             'cnpj': forms.TextInput(attrs={
                 'class': 'form-control',
