@@ -28,7 +28,6 @@
         </div> {% endcomment %}
       </div> 
       <ul class="navbar-nav justify-content-end">
-
         <!-- Botão que aparece apenas com tela pequena / serve para esconder e exibir o navbar lateral -->
         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
           <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -38,39 +37,17 @@
               <i class="sidenav-toggler-line"></i>
             </div>
           </a>
-        </li>
-        
-        <!-- Botão sair -->
-        <li class="nav-item ps-3 d-flex align-items-center">
-          {% if request.user.is_superuser %}
-          <a href="{% url 'admin:logout' %}" class="nav-link text-body font-weight-bold px-0">
-          {% else %}
-          <a href="{% url 'logout' %}" class="nav-link text-body font-weight-bold px-0">
-          {% endif %}
-            <i class="fa fa-sign-out me-sm-1"></i>
-            <span class="d-sm-inline-flex d-none me-3">Sair</span>
-          </a>
-        </li>
-
-        <li class="nav-item d-flex align-items-center">
-          {% if request.user.is_superuser %}
-          <a href="{% url 'admin:password_change' %}" class="nav-link text-body font-weight-bold px-0">
-          {% else %}
-          <a href="{% url 'password_change' %}" class="nav-link text-body font-weight-bold px-0">
-          {% endif %}
-            <i class="fa fa-exchange d-sm-inline-flex d-none me-sm-1"></i>
-            <span class="d-sm-inline-flex d-none me-3">Alterar senha</span>
-          </a>
-        </li>
-
+        </li>        
+        <!-- Botão de acesso ao Perfil -->
         <li class="nav-item px-3 d-flex align-items-center">
-          <a href="javascript:;" class="nav-link text-body p-0">
-            <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+          <a href="/profile" class="nav-link text-body p-0" title="{{ user.perfil }}">
+            <i class="fa fa-user-circle fixed-plugin-button-nav"></i>
+            <span class="d-sm-inline-flex d-none me-3">{{ user.perfil }}</span>            
           </a>
         </li>
-        
+        <!-- Botão Notificações -->
         <li class="nav-item dropdown pe-2 d-flex align-items-center">
-          <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="Notificações">
             <i class="fa fa-bell cursor-pointer"></i>
           </a>
           <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
@@ -141,6 +118,17 @@
               </a>
             </li>
           </ul>
+        </li>
+        <!-- Botão sair -->
+        <li class="nav-item ps-3 d-flex align-items-center">
+          {% if request.user.is_superuser %}
+          <a href="{% url 'admin:logout' %}" class="nav-link text-body px-0" title="Sair">
+          {% else %}
+          <a href="{% url 'logout' %}" class="nav-link text-body px-0" title="Sair">
+          {% endif %}
+            <i class="fa fa-sign-out me-sm-1"></i>
+            <span class="d-sm-inline-flex d-none me-3">Sair</span>
+          </a>
         </li>
       </ul>
     </div>

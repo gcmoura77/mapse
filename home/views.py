@@ -17,7 +17,7 @@ def home(request):
 def index(request):
     return render(request, 'index.html')
 
-def register(request, perfil='paciente'):    
+def register(request, perfil='pessoa'):    
     
     mensagem = ""
     if request.method == 'POST':
@@ -45,7 +45,7 @@ def register(request, perfil='paciente'):
             return redirect('/')
         else:
             mensagem = "Cadastro não realizado!"
-            print("Cadastro não realizado!")
+            print('Cadastro não realizado!')
     else:
         reg_form = RegistrationForm()
         base_perfil_form = PerfilForm()
@@ -83,6 +83,7 @@ def notification(request):
 @login_required
 def profile(request):
     perfil = Perfil.objects.get(login = request.user)
+
     if perfil.tipo_perfil == 'Empresa':
         perfil_especifico = Empresa.objects.get(perfil=perfil)
         subtitulo = perfil_especifico.razao_social
@@ -102,10 +103,8 @@ def profile(request):
     if perfil.imagem:
         imagem_perfil = perfil.imagem.url
     else:
-        imagem_perfil = ''
-    
-
-    
+        imagem_perfil = '/static/img/perfil-no-fundo-branco-vetor.jpg'
+        
     context = { 'segment': 'perfil',
                 'tipo_perfil': perfil.tipo_perfil, 
                 'nome': perfil.nome, 
