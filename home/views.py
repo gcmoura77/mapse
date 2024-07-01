@@ -154,3 +154,5 @@ class UserPasswordChangeView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = UserPasswordChangeForm
   
+def mapeamento(request):    
+    return render(request, 'pages/notifications.html', { 'segment': 'notification' })
