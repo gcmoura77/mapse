@@ -3,3 +3,5 @@ from .pessoa import Pessoa
 from .especialista import Especialista
 from .empresa import Empresa
 from .perfil import Perfil
+from .questionario import Questionario, Questao, OpcaoEscolha
+from .resposta import Resposta

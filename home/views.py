@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from admin_material.forms import RegistrationForm, LoginForm, UserPasswordResetForm, UserPasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout
 
-from .models import Perfil, Empresa, Especialista, Pessoa
-from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm
+from .models import Perfil, Empresa, Especialista, Pessoa, Questionario
+from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, QuestionarioForm, ListaQuestionariosForm
+
+from django.urls import reverse
 
 # Create your views here.
 
@@ -154,5 +156,32 @@ class UserPasswordChangeView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = UserPasswordChangeForm
   
-def mapeamento(request):    
-    return render(request, 'pages/notifications.html', { 'segment': 'notification' })
+def mapeamento(request, id=1):
+    questionario = get_object_or_404(Questionario, pk=id)
+    post_data = request.POST if request.method == "POST" else None
+    form = QuestionarioForm(questionario, post_data)
+    
+    # url = reverse("mapeamento", args=(id,))
+    url = reverse("mapeamento")
+    if form.is_bound and form.is_valid():
+        form.save()
+        messages.add_message(request, messages.INFO, 'Submissions saved.')
+        return redirect(url)
+        
+    context = {
+        "segment": "mapeamento",
+        "questionario": questionario,
+        "form": form,
+    }
+    return render(request, 'mapeamento.html', context)
+
+def escolha_questionario(request):
+    
+    questionarios = Questionario.objects.all().order_by('created')
+
+    context = {
+        "segment": "Escolha Questionário",
+        "empresa": "Nome da Empresa",
+        "questionarios": questionarios,
+    }
+    return render(request, 'escolha_questionario.html', context)

@@ -4,7 +4,6 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path('', views.index, name='index'),     
     path('home/', views.home, name='home'),
@@ -13,6 +12,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
     path('mapeamento/', views.mapeamento,name='mapeamento'),
+    path('mapeamento/escolha', views.escolha_questionario,name='escolha_questionario'),
     # páginas de autenticação
     path('accounts/login/', views.UserLoginView.as_view(), name='login'),
     path('accounts/password-reset/', views.UserPasswordResetView.as_view(), name='password_reset'),
@@ -27,3 +27,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    

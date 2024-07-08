@@ -1,0 +1,48 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Mapeamento {% endblock title %}
+
+{% block content %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="card mt-4">
+                    <div class="card-header p-3">
+                        <h5 class="mb-0">{{ questionario.nome }}</h5>
+                        <p class="text-sm mb-0">                            
+                            {{questionario.descricao}}
+                        </p>            
+                    </div>
+                    <div class="card-body p-3 pb-0">
+                        <form role="form" action="{% url 'mapeamento'  %}" method="POST">
+                            {% csrf_token %}
+                            <h6 class="text-body text-xs font-weight-bolder mb-3">Nome de Sessão</h6>
+                            {% for field in form %}
+
+                                <div class="lead mb-3">
+                                    {{forloop.counter}} . {{ field.label }}
+                                </div>
+
+                                <div class="input-group input-group-outline mb-3">
+                                {{ field }}
+                                </div>
+                                <span class="text-danger">{{ field.errors }}</span>
+                            {% endfor %}
+                            <div class="text-left pb-4">
+                                <button type="submit" name="submit" class="btn btn-outline-primary btn-lg  mt-4 mb-0">
+                                    Enviar Respostas
+                                </button>
+                                <button type="submit" name="limpar" class="btn btn-outline-secondary btn-lg  mt-4 mb-0">
+                                    Limpar Respostas
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+      </div>
+      {% include 'includes/footer.html' %}
+    </div>
+  </main>
+{% endblock content %}

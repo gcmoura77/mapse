@@ -1,0 +1,70 @@
+{% extends 'layouts/base-fullscreen.html' %}
+
+{% load static %}
+
+{% block title %} Encontre o equilibrio e bem estar mental {% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="card mt-4">
+                <div class="card-header p-3">
+                    <h2 class="mb-0">{{ empresa }}</h2>
+                    <p class="text-sm mb-0">                            
+                        Escolha um dos questionários disponíveis para a sua empresa.
+                    </p>            
+                </div>
+                <div class="card-body p-3 pb-0">
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Questionários Disponíveis</h6>
+                          </div>
+                        </div>
+                        <div class="card-body px-0 pb-2">
+                          <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                              <thead>
+                                <tr>
+                                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nome</th>
+                                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Descrição</th>
+                                  <th class="text-secondary opacity-7"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for questionario in questionarios %}
+                                <tr>
+                                  <td>
+                                    <div class="d-flex px-2 py-1">
+                                      <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">{{questionario.nome}}</h6>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <p class="text-xs font-weight-bold mb-0">{{questionario.descricao}}</p>
+                                  </td>
+                                  <td class="align-middle">
+                                    <a href="{% url 'mapeamento' %}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Escolher questionário">
+                                      Escolher
+                                    </a>
+                                  </td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  {% include 'includes/footer.html' %}
+</div>
+</main>
+
+
+{% endblock content %}

@@ -1,66 +1,74 @@
-  <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-          <div class="container-fluid ps-2 pe-0">
-            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="{% url 'admin:index' %}">
-              Mapse
-            </a>
-            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon mt-2">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navigation">
-              <ul class="navbar-nav navbar-nav-hover mx-auto">
-                <li class="nav-item dropdown dropdown-hover mx-2">   
-                  <a class="nav-link d-flex align-items-center ps-2 cursor-pointer active" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-building opacity-6 text-dark me-1"></i>
-                    Para Empresas
-                  </a>
-                  <!-- Menu Dropdown "Para Empresas" -->
-                  <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
-                    <div class="d-none d-lg-block">
-                      <a href="{% url 'mapeamento' %}" class="dropdown-item border-radius-md">
-                        <span>Mapeamento</span>
-                      </a>
-                    </div>
-                    <div class="d-lg-none">
-                      <a href="/" class="dropdown-item border-radius-md">
-                        <span>Mapeamento</span>
-                      </a>
-                    </div>
+{% load i18n static admin_material %}
+<div class="container position-sticky z-index-sticky top-0">
+  <div class="row">
+    <div class="col-12">
+      <!-- CORREÇÃO - Por enquanto a parte de baixo deve deixar assim, não entendi qual o problema, se tirar não faz corretamente o Outline -->
+      <aside class="sidenav navbar navbar-vertical navbar-expand-xs" id="correcao" >
+        <div class="navbar-collapse">
+        </div>
+      </aside>
+      <!-- Fim do comentário sobre erro -->
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+        <div class="container-fluid ps-2 pe-0">
+          <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="{% url 'admin:index' %}">
+            Mapse
+          </a>
+          <!-- Toggler button for small screens -->
+          <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon mt-2">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+            </span>
+          </button>
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto">
+              <li class="nav-item dropdown dropdown-hover mx-2">   
+                <a class="nav-link d-flex align-items-center ps-2 cursor-pointer active" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-building opacity-6 text-dark me-1"></i>
+                  Para Empresas
+                </a>
+                <!-- Menu Dropdown "Para Empresas" -->
+                <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
+                  <div class="d-none d-lg-block">
+                    <a class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#senhaEmpresaModal" href="">                    
+                      <i class="fa fa-map-o opacity-6 text-dark me-1"></i>
+                      <span>Mapeamento</span>
+                    </a>
                   </div>
-                  <!--Fim das Opções "Para Empresas" -->                  
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-2" href="/">
-                    <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                    Para Você
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <!-- <a class="nav-link me-2" href="{% url 'register' %}"> -->
-                  <a class="nav-link me-2" data-bs-toggle="modal" data-bs-target="#escolhaPerfil" href="">                    
-                    <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                    Criar Conta
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-sm mb-0 me-1 text-white bg-primary" href="{% url 'home' %}">
-                    <i class="fas fa-key opacity-6 text-white me-1"></i>
-                    Entrar
-                  </a>
-                </li>
-              </ul>
-            </div>
+                  <div class="d-lg-none">
+                    <a href="/" class="dropdown-item border-radius-md">
+                      <span>Mapeamento</span>
+                    </a>
+                  </div>
+                </div>
+                <!--Fim das Opções "Para Empresas" -->                  
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-2" href="/">
+                  <i class="fa fa-user opacity-6 text-dark me-1"></i>
+                  Para Você
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-2" data-bs-toggle="modal" data-bs-target="#escolhaPerfil" href="">                    
+                  <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
+                  Criar Conta
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-sm mb-0 me-1 text-white bg-primary" href="{% url 'home' %}">
+                  <i class="fas fa-key opacity-6 text-white me-1"></i>
+                  Entrar
+                </a>
+              </li>
+            </ul>
           </div>
-        </nav>
-        <!-- End Navbar -->
-      </div>
+        </div>
+      </nav> <!-- End Navbar -->
     </div>
   </div>
-  {% include './escolha-perfil.html' %}  
+</div>
+{% include './escolha-perfil.html' %}  
+{% include './senha-empresa-modal.html' %}  

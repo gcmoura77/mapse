@@ -1,17 +1,15 @@
 {% extends 'layouts/base-fullscreen.html' %}
+{% load i18n static %}
 
-{% load static %}
+{% block title %} Encontre o equilibrio e bem estar {% endblock title %}
 
-{% block title %} Mapse - Encontre o equilibrio e bem estar mental {% endblock title %}
-
-{% block body %} class="index-page bg-gray-200" {% endblock body %}
+{% block header %}
+{% include 'includes/navigation-fullscreen.html' %}  
+{% endblock header %}  
 
 {% block content %}
 
 <header class="header-2">
-
-  {% include 'includes/navigation-fullscreen.html' %}  
-
   <div class="page-header min-vh-75 relative" style="background-image: url('{% static 'img/Felicidade.jpg' %}')">
     <span class="mask bg-gradient-primary opacity-4"></span>
     <div class="container">
@@ -19,9 +17,8 @@
         <div class="col-lg-7 text-center mx-auto">
           <h1 class="text-white pt-3 mt-n5">Mapse</h1>
           <p class="lead text-white mt-3">
-            Encontre os melhores especialistas para você ou para sua empresa 
-            <br/>
-            Harmonia e equilibrio para viver bem
+            Realiza o mapeamento de saúde, encontre os melhores especialistas para você ou para sua empresa e ganhe
+            harmonia e equilibrio para viver bem
           </p>
         </div>
       </div>
@@ -65,21 +62,20 @@
   </div>
 </section>
 
-
 <section class="my-5 py-5">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-4 ms-auto me-auto p-lg-4 mt-lg-0 mt-4">
         <div class="rotating-card-container">
           <div class="card card-rotate card-background card-background-mask-primary shadow-primary mt-md-0 mt-5">
-            <div class="front front-background" style="background-image: url(https://images.unsplash.com/photo-1569683795645-b62e50fbf103?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80); background-size: cover;">
+            <div class="front front-background" style="background-image: ; background-size: cover;">
               <div class="card-body py-7 text-center">
                 <i class="material-icons text-white text-4xl my-3">touch_app</i>
                 <h3 class="text-white">Feel the <br /> Material Kit</h3>
                 <p class="text-white opacity-8">All the Bootstrap components that you need in a development have been re-design with the new look.</p>
               </div>
             </div>
-            <div class="back back-background" style="background-image: url(https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80); background-size: cover;">
+            <div class="back back-background" style="background-image: ; background-size: cover;">
               <div class="card-body pt-7 text-center">
                 <h3 class="text-white">Discover More</h3>
                 <p class="text-white opacity-8"> You will save a lot of time going from prototyping to full-functional code because all elements are implemented.</p>
@@ -189,7 +185,7 @@
     
     <button type="button" class="btn btn-info w-auto me-1 mb-0">Info</button>
     
-    <button type="button" class="btn btn-success w-auto me-1 mb-0">Success</button>
+    <button type="button" class="btn btn-success w-auto me-1 mb-0" >Success</button>
     
     <button type="button" class="btn btn-warning w-auto me-1 mb-0">Warning</button>
     
@@ -2029,7 +2025,7 @@
       <div class="col-lg-6 mx-auto col-md-8 col-sm-5">
         <div class="input-group input-group-static">
           <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-          <input class="form-control datepicker" placeholder="Please select date" type="text" >
+          <input class="form-control datepicker" placeholder="Please select date" type="text" id="datepickerInput">
         </div>
       </div>
     </div>
@@ -2042,7 +2038,7 @@
           <script src="https://demos.creative-tim.com/material-kit/assets/js/material-kit.min.js?v=3.0.4" type="text/javascript"></script>
           <script>
             if (document.querySelector(".datepicker")) {
-              flatpickr(".datepicker", {});
+              //flatpickr(".datepicker", {});
             }
           </script>
           '></iframe>
@@ -6052,8 +6048,8 @@
           <div class="row text-center py-3 mt-3">
   <div class="col-4 mx-auto">
     <div class="input-group input-group-dynamic">
-      <label class="form-label">Regular</label>
-      <input type="text" class="form-control" >
+      <label class="form-label" for="InputRegular">Regular</label>
+      <input type="text" class="form-control" id="InputRegular" >
     </div>
   </div>
 </div>
@@ -6097,7 +6093,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#code-input-icon-label" role="tab" aria-selected="false">
+                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#code-input-icon-static" role="tab" aria-selected="false">
                   <i class="fas fa-code text-sm me-2"></i> Code
                 </a>
               </li>
@@ -6117,8 +6113,8 @@
           <div class="row text-center py-3 mt-3">
   <div class="col-4 mx-auto">
     <div class="input-group input-group-static">
-      <label>First Name</label>
-      <input class="form-control" placeholder="eg. Kurt Shelby" type="text" >
+      <label for="firstNameInput">First Name</label>
+      <input class="form-control" placeholder="eg. Kurt Shelby" type="text" id="firstNameInput">
     </div>
   </div>
 </div>
@@ -6128,7 +6124,7 @@
           <script src="https://demos.creative-tim.com/material-kit/assets/js/material-kit.min.js?v=3.0.4" type="text/javascript"></script>
           '></iframe>
       </div>
-      <div class="tab-pane" id="code-input-icon-label">
+      <div class="tab-pane" id="code-input-icon-static">
         <div class="position-relative p-4 pb-2">
           <a class="btn btn-sm bg-gradient-dark position-absolute end-4 mt-3" onclick="copyCode(this);" href="javascript:;"><i class="fas fa-copy text-sm me-1"></i> Copy</a>
   <figure class="highlight"><pre><code class="language-html" data-lang="html">  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row text-center py-3 mt-3"</span><span class="nt">&gt;</span>
@@ -6180,18 +6176,19 @@
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
           <link id="pagestyle" href="https://demos.creative-tim.com/material-kit/assets/css/material-kit.min.css?v=3.0.4" rel="stylesheet" />
           <div class="row text-center py-3 mt-3">
-  <div class="col-4 mx-auto">
-    <div class="input-group input-group-outline mb-4">
-      <label class="form-label">Outline</label>
-      <input class="form-control" type="text" >
-    </div>
-  </div>
-</div>
+            <div class="col-4 mx-auto">
+              <div class="input-group input-group-outline mb-4">
+                <label class="form-label" for="outlineInput">Outline</label>
+                <input class="form-control" type="text" id="outlineInput" >
+              </div>
+            </div>
+          </div>
 
           <script src="{% static 'js/core/popper.min.js' %}" type="text/javascript"></script>
           <script src="{% static 'js/core/bootstrap.min.js' %}" type="text/javascript"></script>
           <script src="https://demos.creative-tim.com/material-kit/assets/js/material-kit.min.js?v=3.0.4" type="text/javascript"></script>
-          '></iframe>
+          '>
+        </iframe>
       </div>
       <div class="tab-pane" id="code-input-icon-label">
         <div class="position-relative p-4 pb-2">
@@ -6248,7 +6245,7 @@
   <div class="col-4 mx-auto">
     <div class="input-group input-group-dynamic mb-4">
       <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
-      <input class="form-control" placeholder="Search" type="text" >
+      <input class="form-control" placeholder="Search" type="text" id="serchInput">
     </div>
   </div>
 </div>
@@ -6308,7 +6305,7 @@
           <link id="pagestyle" href="https://demos.creative-tim.com/material-kit/assets/css/material-kit.min.css?v=3.0.4" rel="stylesheet" />
           <div class="row text-center py-3 mt-3">
   <div class="col-4 mx-auto">
-    <input type="text" placeholder="Disabled" class="form-control" disabled>
+    <input type="text" placeholder="Disabled" class="form-control" disabled id="inputDisable">
   </div>
 </div>
 
@@ -6361,10 +6358,10 @@
           <link id="pagestyle" href="https://demos.creative-tim.com/material-kit/assets/css/material-kit.min.css?v=3.0.4" rel="stylesheet" />
           <div class="row text-center py-3 mt-3">
   <div class="col-4 ms-auto">
-    <input type="text" placeholder="Success" class="form-control is-valid" >
+    <input type="text" placeholder="Success" class="form-control is-valid" id="Sucess1">
   </div>
   <div class="col-4 me-auto">
-    <input type="text" placeholder="Error" class="form-control is-invalid" >
+    <input type="text" placeholder="Error" class="form-control is-invalid" id="Error1 >
   </div>
 </div>
 
@@ -6435,25 +6432,25 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="input-group input-group-dynamic mb-4">
-                  <label class="form-label">First Name</label>
-                  <input class="form-control" aria-label="First Name..." type="text" >
+                  <label class="form-label" for="firstName2">First Name</label>
+                  <input class="form-control" aria-label="First Name..." type="text" id="firstName2">
                 </div>
               </div>
               <div class="col-md-6 ps-2">
                 <div class="input-group input-group-dynamic">
-                  <label class="form-label">Last Name</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Last Name..." >
+                  <label class="form-label" for="lastName">Last Name</label>
+                  <input type="text" class="form-control" placeholder="" aria-label="Last Name..." id="lastName">
                 </div>
               </div>
             </div>
             <div class="mb-4">
               <div class="input-group input-group-dynamic">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-control">
+                <label class="form-label" for="emailAdressInput">Email Address</label>
+                <input type="email" class="form-control" id="emailAdressInput">
               </div>
             </div>
             <div class="input-group mb-4 input-group-static">
-              <label>Your message</label>
+              <label for="message">Your message</label>
               <textarea name="message" class="form-control" id="message" rows="4"></textarea>
             </div>
             <div class="row">
@@ -6587,7 +6584,7 @@
           <link id="pagestyle" href="https://demos.creative-tim.com/material-kit/assets/css/material-kit.min.css?v=3.0.4" rel="stylesheet" />
           <!-- -------- START HEADER 1 w/ text and image on right ------- -->
 <header>
-  <div class="page-header min-vh-100" style="background-image: url(&#39;https://images.unsplash.com/photo-1520769945061-0a448c463865?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80&#39;);" loading="lazy">
+  <div class="page-header min-vh-100" style="background-image: ;" loading="lazy">
     <span class="mask bg-gradient-dark opacity-5"></span>
     <div class="container">
       <div class="row">
@@ -6774,75 +6771,6 @@
     </div>
   </div>
 </section>
-
-
-<section class="py-5">
-  <div class="container">
-    <div class="row">
-      <div class="row text-center my-sm-5 mt-5">
-        <div class="col-lg-6 mx-auto">
-          <span class="badge bg-primary mb-3">Boost creativity</span>
-          <h2 class="">With our coded pages</h2>
-          <p class="lead">The easiest way to get started is to use one of our <br /> pre-built example pages. </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-8">
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <a href="">
-              <div class="card move-on-hover">
-                <img class="w-100" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/assets/img/about-us.jpg" alt="aboutus">
-              </div>
-              <div class="mt-2 ms-2">
-                <h6 class="mb-0">About Us Page</h6>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 mt-md-0 mt-5">
-            <a href="">
-              <div class="card move-on-hover">
-                <img class="w-100" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/assets/img/contact-us.jpg" alt="contacus">
-              </div>
-              <div class="mt-2 ms-2">
-                <h6 class="mb-0">Contact Us Page</h6>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 mt-md-3 mt-6">
-            <a href="">
-              <div class="card move-on-hover">
-                <img class="w-100" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/assets/img/sign-in.jpg" alt="signin">
-              </div>
-              <div class="mt-2 ms-2">
-                <h6 class="mb-0">Sign In Page</h6>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 mt-md-3 mt-6">
-            <a href="">
-              <div class="card move-on-hover">
-                <img class="w-100" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/assets/img/author.jpg" alt="author">
-              </div>
-              <div class="mt-2 ms-2">
-                <h6 class="mb-0">Author Page</h6>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mx-auto mt-md-0 mt-5">
-        <div class="position-sticky" style="top:100px !important">
-          <h4 class="">Presentation Pages for Company, Sign In Page, Author and Contact</h4>
-          <h6 class="text-secondary font-weight-normal">These is just a small selection of the multiple possibitilies you have. Focus on the business, not on the design.</h6>
-        </div>
-      </div>
-    </div>
-</section>
-
 
 <!-- -------- START Content Presentation Docs ------- -->
 <div class="container mt-sm-5">
@@ -7070,7 +6998,6 @@
   </div>
 </section>
 
-
 <section class="my-5">
   <div class="container">
     <div class="row">
@@ -7097,7 +7024,6 @@
     </div>
   </div>
 </section>
-
 
 <!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
 <div class="py-5">
@@ -7127,47 +7053,5 @@
 
 {% endblock content %}
 
-{% block javascripts %}
-
-<!--  Plugin for TypedJS, full documentation here: https://github.com/inorganik/CountUp.js -->
-<script src="{% static 'js/plugins/countup.min.js' %}"></script>
-<script src="{% static 'js/plugins/choices.min.js' %}"></script>
-<script src="{% static 'js/plugins/prism.min.js' %}"></script>
-<script src="{% static 'js/plugins/highlight.min.js' %}"></script>
-<!--  Plugin for Parallax, full documentation here: https://github.com/dixonandmoe/rellax -->
-<script src="{% static 'js/plugins/rellax.min.js' %}"></script>
-<!--  Plugin for TiltJS, full documentation here: https://gijsroge.github.io/tilt.js/ -->
-<script src="{% static 'js/plugins/tilt.min.js' %}"></script>
-<!--  Plugin for Selectpicker - ChoicesJS, full documentation here: https://github.com/jshjohnson/Choices -->
-<script src="{% static 'js/plugins/choices.min.js' %}"></script>
-
-
-<script type="text/javascript">
-
-  if (document.getElementById('state1')) {
-    const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
-    if (!countUp.error) {
-      countUp.start();
-    } else {
-      console.error(countUp.error);
-    }
-  }
-  if (document.getElementById('state2')) {
-    const countUp1 = new CountUp('state2', document.getElementById("state2").getAttribute("countTo"));
-    if (!countUp1.error) {
-      countUp1.start();
-    } else {
-      console.error(countUp1.error);
-    }
-  }
-  if (document.getElementById('state3')) {
-    const countUp2 = new CountUp('state3', document.getElementById("state3").getAttribute("countTo"));
-    if (!countUp2.error) {
-      countUp2.start();
-    } else {
-      console.error(countUp2.error);
-    };
-  }
-</script>
-
-{% endblock javascripts %}
+{% block scripts %}
+{% endblock scripts %}

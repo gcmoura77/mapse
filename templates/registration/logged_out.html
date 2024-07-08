@@ -1,7 +1,7 @@
 {% extends 'layouts/base-fullscreen.html' %}
 {% load i18n static %}
 
-{% block title %} Sign OUT {% endblock %}
+{% block title %} Desconectando {% endblock %}
 
 {% block content %}
     <main>
@@ -16,7 +16,7 @@
                             </div>
                             <div class="mt-5">
                                 <div class="d-grid mt-3">
-                                    <a href="{% url 'home' %}" class="btn btn-gray-800">{% trans 'Entrar novamente' %}</a>
+                                    <a href="{% url 'index' %}" class="btn btn-gray-800">{% trans 'Entrar novamente' %}</a>
                                 </div>
                             </div>
                         </div>

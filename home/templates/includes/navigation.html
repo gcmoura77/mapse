@@ -37,7 +37,8 @@
               <i class="sidenav-toggler-line"></i>
             </div>
           </a>
-        </li>        
+        </li> 
+        {% if request.user.is_authenticated %}
         <!-- Botão de acesso ao Perfil -->
         <li class="nav-item px-3 d-flex align-items-center">
           <a href="/profile" class="nav-link text-body p-0" title="{{ user.perfil }}">
@@ -119,6 +120,7 @@
             </li>
           </ul>
         </li>
+        {% endif %}
         <!-- Botão sair -->
         <li class="nav-item ps-3 d-flex align-items-center">
           {% if request.user.is_superuser %}

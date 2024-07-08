@@ -11,7 +11,8 @@
             <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
               <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('{% static 'img/fundoregister.png' %}'); background-size: cover;">
               </div>
-            </div>
+            </div>       
+
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header">
@@ -47,7 +48,8 @@
                       <form role="form" method="post" action="">
                         {% csrf_token %} 
                         {% for field in base_perfil_form %}
-                        <div class="input-group input-group-outline mb-3">
+                        <div class="input-group input-group-outline mb-3">                           
+                          <label class="form-label" for="{{ field.id_for_label}}">{{ field.label}}</label>
                           {{ field }}
                         </div>
                         <span class="text-danger">{{ field.errors }}</span>
@@ -55,6 +57,7 @@
 
                         {% for field in perfil_form %}
                         <div class="input-group input-group-outline mb-3">
+                          <label class="form-label" for="{{ field.id_for_label}}">{{ field.label}}</label>
                           {{ field }}
                         </div>
                         <span class="text-danger">{{ field.errors }}</span>
@@ -89,3 +92,13 @@
 {% include 'includes/footer-fullscreen.html' %}
 
 {% endblock content %}
+
+{% block scripts %}
+  <!-- initialization script -->
+  <script src="{% static 'js/plugins/flatpickr.min.js' %}"></script>
+  <script>
+    if (document.querySelector(".datepicker")) {
+       flatpickr(".datepicker", {});
+    }
+  </script>
+{% endblock scripts %}

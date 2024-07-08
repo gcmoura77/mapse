@@ -1,34 +1,34 @@
 from django import forms
-from .models import Empresa, Pessoa, Especialista, Perfil
+
+from home.models.questionario import OpcaoEscolha, Questionario
+from .models import Empresa, Pessoa, Especialista, Perfil, Resposta
 
 class PerfilForm(forms.ModelForm):
     
     class Meta:
         model = Perfil
-        fields =  ['nome']
-        
+        fields = ('nome',)
+        labels = {'nome': 'Nome',}
+                
         widgets = {
             'nome': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Nome'
-            }),
-        }       
+            }),        
+        }
 
 class PessoaForm(forms.ModelForm):
     
     class Meta:
         model = Pessoa
         fields =  ['cpf','data_nascimento']
+        labels = {'cpf': 'CPF', 'data_nascimento': 'Data Nascimento'}
         
         widgets = {
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'CPF'
             }),
             'data_nascimento': forms.DateInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Data de Nascimento',
-                'type' : 'date'
+                'class': 'form-control datepicker',
             })
         }        
     
@@ -37,24 +37,23 @@ class EspecialistaForm(forms.ModelForm):
     class Meta:
         model = Especialista
         fields =  ['cpf','data_nascimento', 'conselho_profissional', 'numero_conselho']
+        labels = {'cpf': 'CPF', 
+                  'data_nascimento': 'Data Nascimento',
+                  'conselho_profissional': 'Conselho Profissional', 
+                  'numero_conselho': 'Número do Conselho'}
         
         widgets = {
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'CPF'
             }),
             'data_nascimento': forms.DateInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Data de Nascimento',
-                'type' : 'text',
+                'class': 'form-control datepicker',
             }),            
             'conselho_profissional': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Conselho Profissional'
             }),
             'numero_conselho': forms.NumberInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Número do Conselho'
             }),
         }        
     
@@ -63,19 +62,52 @@ class EmpresaForm(forms.ModelForm):
     class Meta:
         model = Empresa
         fields =  ['razao_social','cnpj','pessoa_contato']
-        
+        labels = {'razao_social': 'Conselho Profissional', 
+                  'cnpj': 'Número do Conselho',
+                  'pessoa_contato': 'Pessoa de Contato'}        
         widgets = {
             'razao_social': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Razão Social'
             }),
             'cnpj': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'CNPJ'
             }),
             'pessoa_contato': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Pessoa de Contato'
             }),
         }        
     
+class QuestionarioForm(forms.Form):
+    questao_1 = forms.ChoiceField(widget=forms.RadioSelect, choices=())
+
+    def __init__(self, questionario, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.questionario = questionario
+        del self.fields["questao_1"]
+        for questao in questionario.questao_set.all():
+            opcoesescolha = [(opcaoescolha.id, opcaoescolha.descricao) for opcaoescolha in questao.opcaoescolha_set.all()]
+            self.fields[f"questao_{questao.id}"] = forms.ChoiceField(widget=forms.RadioSelect, choices=opcoesescolha)
+            self.fields[f"questao_{questao.id}"].label = questao.descricao
+          
+    def save(self):
+      data = self.cleaned_data
+      resposta = Resposta(questionario=self.questionario)
+      resposta.save()
+      for questao in self.questionario.questao_set.all():
+          opcaoescolha = OpcaoEscolha.objects.get(pk=data[f"questao_{questao.id}"])
+          resposta.resposta.add(opcaoescolha)
+      
+      resposta.save()
+      return resposta          
+  
+class ListaQuestionariosForm(forms.ModelForm):
+    
+    class Meta:
+        model = Questionario
+        fields =  '__all__'
+        
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'descricao': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+  

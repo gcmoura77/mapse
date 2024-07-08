@@ -52,11 +52,16 @@
           {% endfor %}
       {% endif %}
 
+      {% include "includes/sidebar-opcoes.html" %}
+
+      <hr class="horizontal light mt-0 mb-2">
+
       {% if request.user.is_authenticated and request.user.is_superuser %}
 
-        {% include "includes/sidebar-exemplos.html" %}
+      {% include "includes/sidebar-exemplos.html" %}
 
       {% endif %}
+
       </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">

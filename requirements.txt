@@ -7,7 +7,7 @@ Django==4.2.9
 django-admin-material-dashboard==1.0.10
 exceptiongroup==1.2.1
 executing==2.0.1
-gunicorn==21.2.0
+gunicorn==22.0.0
 ipykernel==6.29.4
 ipython==8.25.0
 jedi==0.19.1
@@ -18,7 +18,7 @@ nest-asyncio==1.6.0
 packaging==24.0
 parso==0.8.4
 pexpect==4.9.0
-Pillow
+Pillow==10.3.0
 platformdirs==4.2.2
 prompt_toolkit==3.0.47
 psutil==5.9.8
