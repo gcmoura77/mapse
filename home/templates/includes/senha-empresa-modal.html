@@ -15,7 +15,7 @@
                 </div>              
             </div>
             <div class="modal-footer pb-3 border-top-0">
-                <form role="form" method="post" action="{% url 'escolha_questionario' %}">
+                <form role="form" method="post" action="{% url 'mapeamento_antigo' %}">
                     {% csrf_token %}             
                     <button class="btn btn-link mb-0" data-bs-dismiss="modal">Ativar depois</button>
                     <button class="btn btn-primary mb-0" id="btnContinuar" disabled>Continuar</button>
@@ -24,6 +24,12 @@
         </div>
     </div>
 </div>
+<!-- CORREÇÃO - Por enquanto a parte de baixo deve deixar assim, não entendi qual o problema, se tirar não faz corretamente o Outline -->
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs" id="correcao" >
+    <div class="navbar-collapse">
+    </div>
+</aside>
+<!-- Fim da Correção -->
 <!-- jQuery (required for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>

@@ -156,12 +156,12 @@ class UserPasswordChangeView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = UserPasswordChangeForm
   
+@login_required
 def mapeamento(request, id=1):
     questionario = get_object_or_404(Questionario, pk=id)
     post_data = request.POST if request.method == "POST" else None
     form = QuestionarioForm(questionario, post_data)
     
-    # url = reverse("mapeamento", args=(id,))
     url = reverse("mapeamento")
     if form.is_bound and form.is_valid():
         form.save()
@@ -175,7 +175,7 @@ def mapeamento(request, id=1):
     }
     return render(request, 'mapeamento.html', context)
 
-def escolha_questionario(request):
+def mapeamento_antigo(request):
     
     questionarios = Questionario.objects.all().order_by('created')
 
@@ -185,3 +185,10 @@ def escolha_questionario(request):
         "questionarios": questionarios,
     }
     return render(request, 'escolha_questionario.html', context)
+
+def mapeamento_empresa(request):
+    
+    context = {
+        "segment": "Mapeamento Empresa",
+    }
+    return render(request, 'mapeamento_empresa.html', context)
