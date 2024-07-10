@@ -42,6 +42,19 @@ gulp.task('scss', function() {
         .pipe(browserSync.stream());
 });
 
+// CSS
+gulp.task('css', function() {
+    return gulp.src([
+            paths.src.css + '/material-dashboard.css'
+        ])
+        .pipe(cleanCss())
+        .pipe(rename(function(path) {
+            // Updates the object in-place
+            path.extname = ".min.css";
+        }))
+        .pipe(gulp.dest(paths.src.css))
+});
+
 // Minify CSS
 gulp.task('minify:css', function() {
     return gulp.src([
