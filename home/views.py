@@ -175,20 +175,16 @@ def mapeamento(request, id=1):
     }
     return render(request, 'mapeamento.html', context)
 
-def mapeamento_antigo(request):
-    
-    questionarios = Questionario.objects.all().order_by('created')
-
-    context = {
-        "segment": "Escolha Questionário",
-        "empresa": "Nome da Empresa",
-        "questionarios": questionarios,
-    }
-    return render(request, 'escolha_questionario.html', context)
-
 def mapeamento_empresa(request):
+    
+    # por enquanto vai ser fixo, preciso mudar quando tiver passo-a-passo
+    questionarios = Questionario.objects.all().order_by('created')
     
     context = {
         "segment": "Mapeamento Empresa",
+        "empresa": "Nome da Empresa",
+        "questionarios": questionarios,
+        "selecionado": "Nome do selecionado",
+        "numero_questoes": "50",
     }
     return render(request, 'mapeamento_empresa.html', context)

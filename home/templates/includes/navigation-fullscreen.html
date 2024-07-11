@@ -26,7 +26,7 @@
                 <!-- Menu Dropdown "Para Empresas" -->
                 <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
                   <div class="d-none d-lg-block">
-                    <a class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#senhaEmpresaModal" href="">                    
+                    <a class="dropdown-item border-radius-md" href="{% url 'mapeamento_empresa' %}">                    
                       <i class="fa fa-map-o opacity-6 text-dark me-1"></i>
                       <span>Mapeamento</span>
                     </a>
@@ -65,4 +65,3 @@
   </div>
 </div>
 {% include './escolha-perfil.html' %}  
-{% include './senha-empresa-modal.html' %}  

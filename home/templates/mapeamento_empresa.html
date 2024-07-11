@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-12 text-center">
         <h3 class="mt-5">Mapeamento Empresa</h3>
-        <h5 class="font-weight-normal opacity-6">Por favor informe o código fornecido pela empresa.</h5>
+        <h5 class="font-weight-normal opacity-6">Vamos iniciar o mapeamento.</h5>
         <div class="multisteps-form mb-5">
           <!--progress bar-->
           <div class="row">
@@ -16,57 +16,41 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                   <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                     <div class="multisteps-form__progress">
-                      <button class="multisteps-form__progress-btn js-active" type="button" title="User Info">
-                        <span>About</span>
+                      <button class="multisteps-form__progress-btn js-active" type="button" title="Código de Ativação">
+                        <span>Ativação</span>
+                      </button>      
+                      <button class="multisteps-form__progress-btn" type="button" title="Escolha do Questionário">
+                        <span>Questionário</span>
                       </button>
-                      <button class="multisteps-form__progress-btn" type="button" title="Address">
-                        <span>Account</span>
-                      </button>
-                      <button class="multisteps-form__progress-btn" type="button" title="Order Info">
-                        <span>Address</span>
+                      <button class="multisteps-form__progress-btn" type="button" title="Responder Questionário Escolhido">
+                        <span>Responder</span>
                       </button>
                     </div>
                   </div>
                 </div>
                 <div class="card-body">
-                  <form class="multisteps-form__form">
+                  <form class="multisteps-form__form" action="{% url 'mapeamento_empresa' %}" >
+                    {% csrf_token %}             
                     <!--single form panel-->
                     <div class="multisteps-form__panel js-active" data-animation="FadeIn">
                       <div class="row text-center mt-4">
                         <div class="col-10 mx-auto">
-                          <h5 class="font-weight-normal">Let's start with the basic information</h5>
-                          <p>Let us know your name and email address. Use an address you don't mind other users contacting you at</p>
+                          <h5 class="font-weight-normal">Precisamos localizar agora o seu questionário</h5>
+                          <p>Para identificarmos os questionários liberados para sua empresa, por favor insira o código de ativação fornecido</p>
                         </div>
                       </div>
                       <div class="multisteps-form__content">
                         <div class="row mt-3">
-                          <div class="col-12 col-sm-4">
-                            <div class="avatar avatar-xxl position-relative">
-                              <img src="{% static 'img/team-2.jpg' %}" class="border-radius-md" alt="team-2">
-                              <a href="javascript:;" class="btn btn-sm btn-icon-only bg-gradient-primary position-absolute bottom-0 end-0 mb-n2 me-n2">
-                                <span class="material-icons text-xs top-0" data-bs-toggle="tooltip" data-bs-placement="top" title="" aria-hidden="true" data-bs-original-title="Edit Image" aria-label="Edit Image">
-                                  edit
-                                </span>
-                              </a>
-                            </div>
-                          </div>
-                          <div class="col-12 col-sm-8 mt-4 mt-sm-0 text-start">
-                            <div class="input-group input-group-dynamic mb-4">
-                              <label class="form-label">First Name</label>
-                              <input type="text" class="form-control multisteps-form__input">
-                            </div>
-                            <div class="input-group input-group-dynamic mb-4">
-                              <label class="form-label">Last Name</label>
-                              <input type="text" class="form-control multisteps-form__input">
-                            </div>
-                            <div class="input-group input-group-dynamic">
-                              <label class="form-label">Email Address</label>
-                              <input type="email" class="form-control multisteps-form__input">
+                          <div class="col-12 col-xs-12 mt-4 mt-xs-0 text-start">
+                            <div class="input-group input-group-outline mb-4">
+                              <label class="form-label" for="Codigo_Empresa">Código de Ativação</label>
+                              <input type="text" class="form-control multisteps-form__input" id="Codigo_Empresa">
                             </div>
                           </div>
                         </div>
                         <div class="button-row d-flex mt-4">
-                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Next</button>
+                          <a class="btn btn-outline-primary mb-0" type="button" href='{% url "index" %}' title="Depois">Ativar Depois</a>
+                          <button class="btn bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" id="btnContinuar" title="Continuar" disabled>Continuar</button>
                         </div>
                       </div>
                     </div>
@@ -74,43 +58,25 @@
                     <div class="multisteps-form__panel" data-animation="FadeIn">
                       <div class="row text-center mt-4">
                         <div class="col-10 mx-auto">
-                          <h5 class="font-weight-normal">What are you doing? (checkboxes)</h5>
-                          <p>Give us more details about you. What do you enjoy doing in your spare time?</p>
+                          <h5 class="font-weight-normal">{{ empresa }}</h5>
+                          <p>Escolha um dos questionários disponíveis para a sua empresa.</p>
                         </div>
                       </div>
                       <div class="multisteps-form__content">
                         <div class="row mt-4">
-                          <div class="col-sm-3 ms-auto">
-                            <input type="checkbox" class="btn-check" id="btncheck1">
-                            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck1">
-                              <i class="material-icons">
-                          brush
-                        </i>
+                          {% for questionario in questionarios %}
+                          <div class="col-md-6 col-sm-12 ms-auto">
+                            <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck{{forloop.counter}}">
+                            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck{{forloop.counter}}">
+                              {{questionario.nome}}
                             </label>
-                            <h6>Design</h6>
+                            <p class="text-xs px-6" >{{questionario.descricao}}</p>
                           </div>
-                          <div class="col-sm-3">
-                            <input type="checkbox" class="btn-check" id="btncheck2">
-                            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck2">
-                              <i class="material-icons">
-                          integration_instructions
-                        </i>
-                            </label>
-                            <h6>Code</h6>
-                          </div>
-                          <div class="col-sm-3 me-auto">
-                            <input type="checkbox" class="btn-check" id="btncheck3">
-                            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck3">
-                              <i class="material-icons">
-                          developer_mode
-                        </i>
-                            </label>
-                            <h6>Develop</h6>
-                          </div>
+                          {% endfor %}
                         </div>
                         <div class="button-row d-flex mt-4">
-                          <button class="btn btn-outline-dark mb-0 js-btn-prev" type="button" title="Prev">Prev</button>
-                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Next</button>
+                          <button class="btn btn-outline-primary mb-0 js-btn-prev" type="button" title="Voltar">Voltar</button>
+                          <button class="btn bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" title="Next" id="ContinuarQuest" disabled>Continuar</button>
                         </div>
                       </div>
                     </div>
@@ -118,48 +84,17 @@
                     <div class="multisteps-form__panel" data-animation="FadeIn">
                       <div class="row text-center mt-4">
                         <div class="col-10 mx-auto">
-                          <h5 class="font-weight-normal">Are you living in a nice area?</h5>
-                          <p>One thing I love about the later sunsets is the chance to go for a walk through the neighborhood woods before dinner</p>
+                          <h5 class="font-weight-normal">Vamos iniciar agora</h5>
+                          <p>Após iniciar o questioário você não poderá retornar ou refazê-lo. Reserve um local tranquilo e sem interrupções para responder. </p>
                         </div>
                       </div>
                       <div class="multisteps-form__content">
-                        <div class="row text-start">
-                          <div class="col-12 col-md-8 mt-3">
-                            <div class="input-group input-group-static">
-                              <label>Street Name</label>
-                              <input type="text" class="form-control multisteps-form__input">
-                            </div>
-                          </div>
-                          <div class="col-12 col-md-4 mt-3">
-                            <div class="input-group input-group-static">
-                              <label>Street No</label>
-                              <input class="multisteps-form__input form-control" type="number" />
-                            </div>
-                          </div>
-                          <div class="col-12 col-md-7 mt-3">
-                            <div class="input-group input-group-static">
-                              <label>City</label>
-                              <input class="multisteps-form__input form-control" type="text" />
-                            </div>
-                          </div>
-                          <div class="col-12 col-md-5 ms-auto mt-3 text-start">
-                            <div>
-                              <label class="form-label mb-0 ms-0">Country</label>
-                              <select class="form-control" name="choices-country" id="choices-country">
-                                <option value="Argentina">Argentina</option>
-                                <option value="Albania">Albania</option>
-                                <option value="Algeria">Algeria</option>
-                                <option value="Andorra">Andorra</option>
-                                <option value="Angola">Angola</option>
-                                <option value="Brasil">Brasil</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
+                        <div class="row mt-4">
+                          <h3 class="font-weight-normal">{{selecionado}}</h3>
+                          <p>Total de questões {{numero_questoes}}. </p>
                           <div class="button-row d-flex mt-4 col-12">
-                            <button class="btn btn-outline-dark mb-0 js-btn-prev" type="button" title="Prev">Prev</button>
-                            <button class="btn bg-gradient-dark ms-auto mb-0" type="button" title="Send">Send</button>
+                            <button class="btn btn-outline-primary mb-0 js-btn-prev" type="button" title="Voltar">Voltar</button>
+                            <button class="btn bg-gradient-primary ms-auto mb-0" type="button" title="Confirmar">Confirmar e Responder</button>
                           </div>
                         </div>
                       </div>
@@ -183,24 +118,34 @@
 
   <script src="{% static 'js/plugins/multistep-form.js' %}"></script>
   <script src="{% static 'js/plugins/choices.min.js' %}"></script>
+  <!-- jQuery (required for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
   <script>
-    if (document.getElementById('choices-country')) {
-      var country = document.getElementById('choices-country');
-      const example = new Choices(country);
-    }
 
-    var openFile = function(event) {
-      var input = event.target;
+    $(document).ready(function() {
+      $('#Codigo_Empresa').on('input', function() {
+        var codigoEmpresa = $(this).val().trim();
+        if (codigoEmpresa.length > 0) {
+          $('#btnContinuar').removeAttr('disabled');
+        } else {
+          $('#btnContinuar').attr('disabled', 'disabled');
+        }
+      });
 
-      // Instantiate FileReader
-      var reader = new FileReader();
-      reader.onload = function() {
-        imageFile = reader.result;
+      
+      $('input[name="escolhaQuestionario"]').on('change', function() {
+        if ($('input[name="escolhaQuestionario"]:checked').length > 0) {
+            $('#ContinuarQuest').removeAttr('disabled');
+        } else {
+            $('#ContinuarQuest').attr('disabled', 'disabled');
+        }
+      });      
+  
 
-        document.getElementById("imageChange").innerHTML = '<img width="200" src="' + imageFile + '" class="rounded-circle w-100 shadow" />';
-      };
-      reader.readAsDataURL(input.files[0]);
-    };
-  </script>
+
+    });
+
+  </script>  
 
 {% endblock scripts %}

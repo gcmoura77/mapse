@@ -13,8 +13,6 @@ urlpatterns = [
     path('profile/edit/', views.profile_edit, name='profile_edit'),
     path('mapeamento/', views.mapeamento,name='mapeamento'),
     path('mapeamento/empresa', views.mapeamento_empresa,name='mapeamento_empresa'),
-    path('mapeamento/antigo', views.mapeamento_antigo,name='mapeamento_antigo'),
-
     
     # páginas de autenticação
     path('accounts/login/', views.UserLoginView.as_view(), name='login'),
