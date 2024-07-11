@@ -29,7 +29,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form class="multisteps-form__form" action="{% url 'mapeamento_empresa' %}" >
+                  <form class="multisteps-form__form" action="{% url 'mapeamento' %}" >
                     {% csrf_token %}             
                     <!--single form panel-->
                     <div class="multisteps-form__panel js-active" data-animation="FadeIn">
@@ -50,29 +50,34 @@
                         </div>
                         <div class="button-row d-flex mt-4">
                           <a class="btn btn-outline-primary mb-0" type="button" href='{% url "index" %}' title="Depois">Ativar Depois</a>
-                          <button class="btn bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" id="btnContinuar" title="Continuar" disabled>Continuar</button>
+                          <button class="btn bg-gradient-primary ms-auto mb-0 js-btn-next" 
+                                  type="button" 
+                                  id="btnContinuar" 
+                                  title="Continuar" 
+                                  hx-trigger="click" 
+                                  hx-post="{% url 'lista_questionarios' %}" 
+                                  hx-target="#lista_questionarios"
+                                  disabled>Continuar</button>
                         </div>
                       </div>
                     </div>
                     <!--single form panel-->
-                    <div class="multisteps-form__panel" data-animation="FadeIn">
+                    <div class="multisteps-form__panel" data-animation="FadeIn" id="lista_questionarios">
                       <div class="row text-center mt-4">
                         <div class="col-10 mx-auto">
-                          <h5 class="font-weight-normal">{{ empresa }}</h5>
+                          <h5 class="font-weight-normal">Sem código de ativação</h5>
                           <p>Escolha um dos questionários disponíveis para a sua empresa.</p>
                         </div>
                       </div>
-                      <div class="multisteps-form__content">
-                        <div class="row mt-4">
-                          {% for questionario in questionarios %}
-                          <div class="col-md-6 col-sm-12 ms-auto">
-                            <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck{{forloop.counter}}">
-                            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck{{forloop.counter}}">
-                              {{questionario.nome}}
+                      <div class="multisteps-form__content" >                        
+                        <div class="row mt-4"  >
+                          <div class="col-md-12 col-sm-12 ms-auto">
+                            <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck1">
+                            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck1">
+                                Não informou o código de ativação
                             </label>
-                            <p class="text-xs px-6" >{{questionario.descricao}}</p>
+                            <p class="text-xs px-6" >Esta descrição irá aparecer como um subtítulo e pode ser uma opção para explicar o questionário</p>
                           </div>
-                          {% endfor %}
                         </div>
                         <div class="button-row d-flex mt-4">
                           <button class="btn btn-outline-primary mb-0 js-btn-prev" type="button" title="Voltar">Voltar</button>
@@ -94,7 +99,7 @@
                           <p>Total de questões {{numero_questoes}}. </p>
                           <div class="button-row d-flex mt-4 col-12">
                             <button class="btn btn-outline-primary mb-0 js-btn-prev" type="button" title="Voltar">Voltar</button>
-                            <button class="btn bg-gradient-primary ms-auto mb-0" type="button" title="Confirmar">Confirmar e Responder</button>
+                            <button class="btn bg-gradient-primary ms-auto mb-0" type="submit" title="Confirmar">Confirmar e Responder</button>
                           </div>
                         </div>
                       </div>
@@ -117,7 +122,6 @@
 {% block scripts %}
 
   <script src="{% static 'js/plugins/multistep-form.js' %}"></script>
-  <script src="{% static 'js/plugins/choices.min.js' %}"></script>
   <!-- jQuery (required for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

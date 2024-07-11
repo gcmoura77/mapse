@@ -177,14 +177,26 @@ def mapeamento(request, id=1):
 
 def mapeamento_empresa(request):
     
-    # por enquanto vai ser fixo, preciso mudar quando tiver passo-a-passo
-    questionarios = Questionario.objects.all().order_by('created')
-    
     context = {
         "segment": "Mapeamento Empresa",
-        "empresa": "Nome da Empresa",
-        "questionarios": questionarios,
         "selecionado": "Nome do selecionado",
         "numero_questoes": "50",
     }
     return render(request, 'mapeamento_empresa.html', context)
+
+def lista_questionarios(request):
+    # template_name = 'state/hx/uf_hx.html'
+    template_name = 'lista_questionarios_empresa.html'
+    
+    questionarios = Questionario.objects.all().order_by('created')
+    empresa = Empresa.objects.get(id=1)
+     
+    context = {
+        "segment": "Mapeamento Empresa",
+        "empresa": empresa,
+        "questionarios": questionarios,
+        "selecionado": "Nome do selecionado",
+        "numero_questoes": "50",
+    }
+    
+    return render(request, template_name, context)
