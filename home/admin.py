@@ -3,7 +3,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Pessoa, Especialista, Empresa, Perfil, Questionario, Questao, OpcaoEscolha, Resposta
+from home.models.empresa import CodigoAtivacao
+
+from .models import Pessoa, Especialista, Empresa, Perfil, Questionario, Questao, OpcaoEscolha, Resposta, QuestionarioEmpresa
 
 @admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
@@ -17,9 +19,21 @@ class PerfilAdmin(admin.ModelAdmin):
 class EspecialistaAdmin(admin.ModelAdmin):
     list_display = ('perfil', 'cpf', 'conselho_profissional')
 
+
+class CodigoAtivacaoInLine(admin.TabularInline):
+    model = CodigoAtivacao
+    show_change_link = True
+    verbose_name_plural = "Códigos"    
+    
+class QuestionariosEmpresaInLine(admin.TabularInline):
+    model = QuestionarioEmpresa
+    show_change_link = True
+    verbose_name_plural = "Questionários"        
+
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_display = ('perfil','razao_social', 'cnpj')
+    inlines = [CodigoAtivacaoInLine, QuestionariosEmpresaInLine]    
         
 class PerfilInline(admin.StackedInline):
     model = Perfil

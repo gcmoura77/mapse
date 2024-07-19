@@ -19,17 +19,17 @@
                       <button class="multisteps-form__progress-btn js-active" type="button" title="Código de Ativação">
                         <span>Ativação</span>
                       </button>      
-                      <button class="multisteps-form__progress-btn" type="button" title="Escolha do Questionário">
+                      <button class="multisteps-form__progress-btn" type="button" title="Escolha do Questionário" id="btnEscolhaQuestionario" disabled>
                         <span>Questionário</span>
                       </button>
-                      <button class="multisteps-form__progress-btn" type="button" title="Responder Questionário Escolhido">
+                      <button class="multisteps-form__progress-btn" type="button" title="Responder Questionário Escolhido" disabled>
                         <span>Responder</span>
                       </button>
                     </div>
                   </div>
                 </div>
-                <div class="card-body">
-                  <form class="multisteps-form__form" action="{% url 'mapeamento' %}" >
+                <div class="card-body" >
+                  <form class="multisteps-form__form" action="." method="post">
                     {% csrf_token %}             
                     <!--single form panel-->
                     <div class="multisteps-form__panel js-active" data-animation="FadeIn">
@@ -44,7 +44,7 @@
                           <div class="col-12 col-xs-12 mt-4 mt-xs-0 text-start">
                             <div class="input-group input-group-outline mb-4">
                               <label class="form-label" for="Codigo_Empresa">Código de Ativação</label>
-                              <input type="text" class="form-control multisteps-form__input" id="Codigo_Empresa">
+                              <input type="text" class="form-control multisteps-form__input" id="Codigo_Empresa" name="codigo_empresa">
                             </div>
                           </div>
                         </div>
@@ -55,22 +55,22 @@
                                   id="btnContinuar" 
                                   title="Continuar" 
                                   hx-trigger="click" 
-                                  hx-post="{% url 'lista_questionarios' %}" 
+                                  hx-post="{% url 'lista_questionarios'%}" 
                                   hx-target="#lista_questionarios"
                                   disabled>Continuar</button>
                         </div>
                       </div>
                     </div>
                     <!--single form panel-->
-                    <div class="multisteps-form__panel" data-animation="FadeIn" id="lista_questionarios">
+                    <div class="multisteps-form__panel" data-animation="FadeIn">
                       <div class="row text-center mt-4">
                         <div class="col-10 mx-auto">
-                          <h5 class="font-weight-normal">Sem código de ativação</h5>
-                          <p>Escolha um dos questionários disponíveis para a sua empresa.</p>
+                        <h4 class="font-weight-normal" id="nome_empresa">{{ empresa }}</h4>
+                        <p>Escolha um dos questionários disponíveis para a sua empresa.</p>
                         </div>
                       </div>
                       <div class="multisteps-form__content" >                        
-                        <div class="row mt-4"  >
+                        <div class="row mt-4" id="lista_questionarios">
                           <div class="col-md-12 col-sm-12 ms-auto">
                             <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck1">
                             <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck1">
@@ -81,7 +81,13 @@
                         </div>
                         <div class="button-row d-flex mt-4">
                           <button class="btn btn-outline-primary mb-0 js-btn-prev" type="button" title="Voltar">Voltar</button>
-                          <button class="btn bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" title="Next" id="ContinuarQuest" disabled>Continuar</button>
+                          <button class="btn bg-gradient-primary ms-auto mb-0 js-btn-next" 
+                                  type="button" 
+                                  title="Next" 
+                                  hx-trigger="click" 
+                                  hx-post="{% url 'confirmacao_questionario'%}" 
+                                  hx-target="#nome_questionario_selecionado"
+                                  id="ContinuarQuest" disabled>Continuar</button>
                         </div>
                       </div>
                     </div>
@@ -95,8 +101,8 @@
                       </div>
                       <div class="multisteps-form__content">
                         <div class="row mt-4">
-                          <h3 class="font-weight-normal">{{selecionado}}</h3>
-                          <p>Total de questões {{numero_questoes}}. </p>
+                          <h3 class="font-weight-normal" id="nome_questionario_selecionado">Nome do Questionário Selecionado</h3>
+                          <p id="total_questoes">Total de questões ---Número de Questões do Questionário---. </p>
                           <div class="button-row d-flex mt-4 col-12">
                             <button class="btn btn-outline-primary mb-0 js-btn-prev" type="button" title="Voltar">Voltar</button>
                             <button class="btn bg-gradient-primary ms-auto mb-0" type="submit" title="Confirmar">Confirmar e Responder</button>
@@ -132,21 +138,12 @@
         var codigoEmpresa = $(this).val().trim();
         if (codigoEmpresa.length > 0) {
           $('#btnContinuar').removeAttr('disabled');
+          $('#btnEscolhaQuestionario').removeAttr('disabled');
         } else {
           $('#btnContinuar').attr('disabled', 'disabled');
+          $('#btnEscolhaQuestionario').attr('disabled', 'disabled');
         }
       });
-
-      
-      $('input[name="escolhaQuestionario"]').on('change', function() {
-        if ($('input[name="escolhaQuestionario"]:checked').length > 0) {
-            $('#ContinuarQuest').removeAttr('disabled');
-        } else {
-            $('#ContinuarQuest').attr('disabled', 'disabled');
-        }
-      });      
-  
-
 
     });
 

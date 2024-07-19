@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from admin_material.forms import RegistrationForm, LoginForm, UserPasswordResetForm, UserPasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
+from django.core.exceptions import PermissionDenied
+import os
 
-from .models import Perfil, Empresa, Especialista, Pessoa, Questionario
-from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, QuestionarioForm, ListaQuestionariosForm
+from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao
+from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, QuestionarioForm
 
 from django.urls import reverse
 
@@ -157,12 +159,12 @@ class UserPasswordChangeView(PasswordChangeView):
     form_class = UserPasswordChangeForm
   
 @login_required
-def mapeamento(request, id=1):
+def mapeamento(request, id):
     questionario = get_object_or_404(Questionario, pk=id)
     post_data = request.POST if request.method == "POST" else None
     form = QuestionarioForm(questionario, post_data)
     
-    url = reverse("mapeamento")
+    url = reverse("mapeamento", args=[id])
     if form.is_bound and form.is_valid():
         form.save()
         messages.add_message(request, messages.INFO, 'Submissions saved.')
@@ -177,26 +179,54 @@ def mapeamento(request, id=1):
 
 def mapeamento_empresa(request):
     
+    codigo_ativacao = request.POST.get('codigo_empresa')
+    questionario    = request.POST.get('escolhaQuestionario')
+    
+    if request.method == 'POST':
+        
+        if codigo_ativacao and questionario:
+            # user = authenticate(request, username=username, password=password)
+            codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
+            user = codigo.empresa.login_mapeamento
+            if user and user.is_active:
+                login(request, user)    
+                return redirect('mapeamento', id=questionario)
+            else:
+                raise PermissionDenied()
+    
     context = {
         "segment": "Mapeamento Empresa",
-        "selecionado": "Nome do selecionado",
-        "numero_questoes": "50",
     }
     return render(request, 'mapeamento_empresa.html', context)
 
 def lista_questionarios(request):
-    # template_name = 'state/hx/uf_hx.html'
-    template_name = 'lista_questionarios_empresa.html'
+    template_name = 'partials/lista_questionarios_empresa.html'    
+    nome_empresa = 'Não localizada'
+    questionarios = {}
     
-    questionarios = Questionario.objects.all().order_by('created')
-    empresa = Empresa.objects.get(id=1)
+    codigo_ativacao = request.POST.get('codigo_empresa')   
+    
+    try:
+        codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
+        nome_empresa = codigo.empresa
+        questionarios = codigo.empresa.questionarios.all()      # type: ignore
+    except:
+        nome_empresa = 'Código de Ativação não identificado'  
      
     context = {
-        "segment": "Mapeamento Empresa",
-        "empresa": empresa,
+        "empresa": nome_empresa,
         "questionarios": questionarios,
-        "selecionado": "Nome do selecionado",
-        "numero_questoes": "50",
     }
     
+    return render(request, template_name, context)
+
+def confirmacao_questionario(request):
+    template_name = 'partials/confirmacao_questionario.html'
+    questionario = get_object_or_404(Questionario, pk=request.POST.get('escolhaQuestionario'))
+    
+    context = { 
+        "nome_questionario_selecionado": questionario.nome,
+        "total_questoes": questionario.questao_set.count(), # type: ignore
+    }
+
     return render(request, template_name, context)

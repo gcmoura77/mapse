@@ -11,9 +11,10 @@ urlpatterns = [
     path('accounts/register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
-    path('mapeamento/', views.mapeamento,name='mapeamento'),
-    path('mapeamento/empresa', views.mapeamento_empresa,name='mapeamento_empresa'),
-    path('mapeamento/lista_questionarios', views.lista_questionarios, name='lista_questionarios'),
+    path('mapeamento/<int:id>/', views.mapeamento,name='mapeamento'),
+    path('mapeamento/empresa/', views.mapeamento_empresa,name='mapeamento_empresa'),
+    path('mapeamento/lista_questionarios/', views.lista_questionarios, name='lista_questionarios'),
+    path('mapeamento/confirmacao_questionario/', views.confirmacao_questionario, name='confirmacao_questionario'),
     
     # páginas de autenticação
     path('accounts/login/', views.UserLoginView.as_view(), name='login'),
