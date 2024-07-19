@@ -26,6 +26,7 @@ class PessoaForm(forms.ModelForm):
         widgets = {
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
+                'data-mask': '000.000.000-00',                
             }),
             'data_nascimento': forms.DateInput(attrs={
                 'class': 'form-control datepicker',
@@ -45,6 +46,7 @@ class EspecialistaForm(forms.ModelForm):
         widgets = {
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
+                'data-mask': '000.000.000-00',
             }),
             'data_nascimento': forms.DateInput(attrs={
                 'class': 'form-control datepicker',
@@ -62,8 +64,8 @@ class EmpresaForm(forms.ModelForm):
     class Meta:
         model = Empresa
         fields =  ['razao_social','cnpj','pessoa_contato']
-        labels = {'razao_social': 'Conselho Profissional', 
-                  'cnpj': 'Número do Conselho',
+        labels = {'razao_social': 'Razão Social', 
+                  'cnpj': 'CNPJ',
                   'pessoa_contato': 'Pessoa de Contato'}        
         widgets = {
             'razao_social': forms.TextInput(attrs={
@@ -71,11 +73,12 @@ class EmpresaForm(forms.ModelForm):
             }),
             'cnpj': forms.TextInput(attrs={
                 'class': 'form-control',
+                'data-mask': '00.000.000/0000-00',
             }),
             'pessoa_contato': forms.TextInput(attrs={
                 'class': 'form-control',
             }),
-        }        
+        }
     
 class QuestionarioForm(forms.Form):
     questao_1 = forms.ChoiceField(widget=forms.RadioSelect, choices=())
@@ -100,14 +103,4 @@ class QuestionarioForm(forms.Form):
       resposta.save()
       return resposta          
   
-class ListaQuestionariosForm(forms.ModelForm):
-    
-    class Meta:
-        model = Questionario
-        fields =  '__all__'
-        
-        widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'descricao': forms.TextInput(attrs={'class': 'form-control'}),
-        }
   

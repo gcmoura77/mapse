@@ -1,4 +1,8 @@
-{% extends "layouts/base.html" %}
+{% extends base_template %}
+{% comment %} {% extends "layouts/base-fullscreen.html" %}
+{% extends "layouts/base.html" %} {% endcomment %}
+
+
 {% load static %}
 
 {% block title %} Mapeamento {% endblock title %}
@@ -15,7 +19,7 @@
                         </p>            
                     </div>
                     <div class="card-body p-3 pb-0">
-                        <form role="form" action="{% url 'mapeamento'  %}" method="POST">
+                        <form role="form" action="{% url 'mapeamento' id=questionario.id %}" method="POST">
                             {% csrf_token %}
                             <h6 class="text-body text-xs font-weight-bolder mb-3">Nome de Sessão</h6>
                             {% for field in form %}

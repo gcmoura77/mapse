@@ -2,12 +2,6 @@
 <div class="container position-sticky z-index-sticky top-0">
   <div class="row">
     <div class="col-12">
-      <!-- CORREÇÃO - Por enquanto a parte de baixo deve deixar assim, não entendi qual o problema, se tirar não faz corretamente o Outline -->
-      <aside class="sidenav navbar navbar-vertical navbar-expand-xs" id="correcao" >
-        <div class="navbar-collapse">
-        </div>
-      </aside>
-      <!-- Fim do comentário sobre erro -->
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
         <div class="container-fluid ps-2 pe-0">
@@ -32,7 +26,7 @@
                 <!-- Menu Dropdown "Para Empresas" -->
                 <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
                   <div class="d-none d-lg-block">
-                    <a class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#senhaEmpresaModal" href="">                    
+                    <a class="dropdown-item border-radius-md" href="{% url 'mapeamento_empresa' %}">                    
                       <i class="fa fa-map-o opacity-6 text-dark me-1"></i>
                       <span>Mapeamento</span>
                     </a>
@@ -71,4 +65,3 @@
   </div>
 </div>
 {% include './escolha-perfil.html' %}  
-{% include './senha-empresa-modal.html' %}  

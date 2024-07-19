@@ -1,0 +1,35 @@
+
+<div class="row mt-4"  >
+    {% for questionario in questionarios %}
+        {% if questionarios.count > 1 %}
+            <div class="col-md-6 col-sm-12 ms-auto">
+        {% else %}
+            <div class="col-md-12 col-sm-12 ms-auto">
+        {% endif %}
+            <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck{{forloop.counter}}" value="{{questionario.questionario.id}}">
+            <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck{{forloop.counter}}">
+                {{questionario.questionario.nome}}
+            </label>
+            <p class="text-xs px-6" >{{questionario.questionario.descricao}}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<h4 class="font-weight-normal" id="nome_empresa" hx-swap-oob="true">{{ empresa }}</h4>
+
+{% block scripts %}
+
+<script>
+    $(document).ready(function() {
+        $('input[name="escolhaQuestionario"]').on('change', function() {
+            if ($('input[name="escolhaQuestionario"]:checked').length > 0) {
+                $('#ContinuarQuest').removeAttr('disabled');
+            } else {
+                $('#ContinuarQuest').attr('disabled', 'disabled');
+            }
+        }); 
+
+    });
+</script>  
+
+{% endblock scripts %}

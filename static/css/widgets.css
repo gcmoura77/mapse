@@ -65,7 +65,7 @@
     line-height: 1;
 }
 
-.selector .selector-available input {
+.selector .selector-available input,.selector-filter input[type="text"] {
     width: 320px;
     margin-left: 8px;
     display: block;
@@ -626,7 +626,6 @@ select + .related-widget-wrapper-link,
 }
 
 ul.errorlist {
-    margin: -25px 0 25px 0;
     list-style-type: none;
     color: #d96060;
 }
