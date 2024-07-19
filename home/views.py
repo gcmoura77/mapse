@@ -163,17 +163,28 @@ def mapeamento(request, id):
     questionario = get_object_or_404(Questionario, pk=id)
     post_data = request.POST if request.method == "POST" else None
     form = QuestionarioForm(questionario, post_data)
+
+    try:
+        empresa = Empresa.objects.get(login_mapeamento=request.user)
+        base_template = "layouts/base-fullscreen.html"
+    except:
+        # esta parte ainda precisa ser pensada, no caso do preenchimento individual identificado pelo login da pessoa
+        empresa = {}
+        base_template = "layouts/base.html"
+
     
     url = reverse("mapeamento", args=[id])
     if form.is_bound and form.is_valid():
         form.save()
-        messages.add_message(request, messages.INFO, 'Submissions saved.')
+        messages.add_message(request, messages.INFO, 'Envio salvo.')
         return redirect(url)
         
     context = {
         "segment": "mapeamento",
         "questionario": questionario,
         "form": form,
+        "empresa": empresa,
+        "base_template": base_template,
     }
     return render(request, 'mapeamento.html', context)
 
@@ -185,14 +196,14 @@ def mapeamento_empresa(request):
     if request.method == 'POST':
         
         if codigo_ativacao and questionario:
-            # user = authenticate(request, username=username, password=password)
             codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
-            user = codigo.empresa.login_mapeamento
-            if user and user.is_active:
-                login(request, user)    
-                return redirect('mapeamento', id=questionario)
-            else:
-                raise PermissionDenied()
+            if not request.user.is_authenticated:
+                user = codigo.empresa.login_mapeamento
+                if user and user.is_active:
+                    login(request, user)    
+                else:
+                    raise PermissionDenied()
+            return redirect('mapeamento', id=questionario)
     
     context = {
         "segment": "Mapeamento Empresa",
