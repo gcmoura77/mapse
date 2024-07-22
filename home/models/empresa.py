@@ -18,23 +18,3 @@ class Empresa(PerfilBase):
 
     def __str__(self):
         return self.nome_fantasia
-    
-class CodigoAtivacao(TimeStampedModel):  
-                                  
-    empresa      = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    codigo       = models.IntegerField(default=888888, blank=True, primary_key=True)   
-    
-    def __str__(self):
-        return str(self.codigo)
-
-class QuestionarioEmpresa(TimeStampedModel):
-    empresa         = models.ForeignKey(Empresa, related_name='questionarios', on_delete=models.CASCADE)
-    questionario    = models.ForeignKey(Questionario, related_name='empresas', on_delete=models.CASCADE)
-    data_ativacao   = models.DateTimeField(null=True, blank=True)
-    data_inativacao = models.DateTimeField(null=True, blank=True)
-    
-    def __str__(self):
-        return str(self.empresa) + ': ' + str(self.questionario)
-
-    
-    

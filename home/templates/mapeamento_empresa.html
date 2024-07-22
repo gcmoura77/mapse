@@ -43,8 +43,8 @@
                         <div class="row mt-3">
                           <div class="col-12 col-xs-12 mt-4 mt-xs-0 text-start">
                             <div class="input-group input-group-outline mb-4">
-                              <label class="form-label" for="Codigo_Empresa">Código de Ativação</label>
-                              <input type="text" class="form-control multisteps-form__input" id="Codigo_Empresa" name="codigo_empresa">
+                              <label class="form-label" for="codigo_ativacao">Código de Ativação</label>
+                              <input type="text" class="form-control multisteps-form__input" id="codigo_ativacao" name="codigo_ativacao">
                             </div>
                           </div>
                         </div>
@@ -134,7 +134,7 @@
   <script>
 
     $(document).ready(function() {
-      $('#Codigo_Empresa').on('input', function() {
+      $('#codigo_ativacao').on('input', function() {
         var codigoEmpresa = $(this).val().trim();
         if (codigoEmpresa.length > 0) {
           $('#btnContinuar').removeAttr('disabled');

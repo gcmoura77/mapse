@@ -7,7 +7,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.core.exceptions import PermissionDenied
 import os
 
-from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao
+from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao, Mapeamento, MapeamentoAtivacao
 from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, QuestionarioForm
 
 from django.urls import reverse
@@ -190,17 +190,20 @@ def mapeamento(request, id):
 
 def mapeamento_empresa(request):
     
-    codigo_ativacao = request.POST.get('codigo_empresa')
+    codigo_ativacao = request.POST.get('codigo_ativacao')
     questionario    = request.POST.get('escolhaQuestionario')
     
     if request.method == 'POST':
         
         if codigo_ativacao and questionario:
-            codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
+            mapeamento = MapeamentoAtivacao.objects.get(codigo=codigo_ativacao).mapeamento
+            
             if not request.user.is_authenticated:
-                user = codigo.empresa.login_mapeamento
+                user = mapeamento.empresa.login_mapeamento
                 if user and user.is_active:
-                    login(request, user)    
+                    login(request, user)   
+                    # criar a resposta e salvar com o código de ativação/login/mapeamento
+                    # atualizar o uso do código de ativação 
                 else:
                     raise PermissionDenied()
             return redirect('mapeamento', id=questionario)
@@ -215,20 +218,22 @@ def lista_questionarios(request):
     nome_empresa = 'Não localizada'
     questionarios = {}
     
-    codigo_ativacao = request.POST.get('codigo_empresa')   
+    codigo_ativacao = request.POST.get('codigo_ativacao')   
     
     try:
-        codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
-        nome_empresa = codigo.empresa
-        questionarios = codigo.empresa.questionarios.all()      # type: ignore
+        mapeamento = MapeamentoAtivacao.objects.get(codigo_ativacao=codigo_ativacao).mapeamento
+        # buscar os mapeamentos apenas que o código de ativação não foram usados ou são códigos únicos
+        nome_empresa = mapeamento.empresa
+        questionarios = mapeamento.questionarios.all()      
     except:
-        nome_empresa = 'Código de Ativação não identificado'  
+        nome_empresa = 'Código de Ativação não identificado'          
      
     context = {
         "empresa": nome_empresa,
         "questionarios": questionarios,
     }
     
+    print(questionarios)
     return render(request, template_name, context)
 
 def confirmacao_questionario(request):
