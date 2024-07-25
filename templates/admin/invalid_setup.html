@@ -51,8 +51,8 @@
     </div>
 {% endblock %}
 
-{% block extrascript %}
+{% block scripts %}
     <script type="application/javascript">
-        notification.info("{% trans "Something's wrong with your database installation. Make sure the appropriate database tables have been created, and make sure the database is readable by the appropriate user." %}", 'top', 'right');
+        notification.info("Alguma coisa de errado ocorreu na instalação. Revise e confirme se todas as tabelas do banco de dados foram criadas, e garante que o usário do banco tem permissão para acessá-lo .", 'top', 'right');
     </script>
 {% endblock %}

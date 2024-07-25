@@ -5,15 +5,15 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout, authenticate, login
 from django.core.exceptions import PermissionDenied
-import os
 
-from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao
-from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, QuestionarioForm
+from home.models import codigo_ativacao
+
+from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao, MapeamentoAtivacao
+from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, RespostaMapeamentoForm
 
 from django.urls import reverse
 
 # Create your views here.
-
 @login_required
 def home(request):
     return render(request, 'home.html')
@@ -44,8 +44,6 @@ def register(request, perfil='pessoa'):
             perfil_salvo.perfil = base_perfil_salvo
             perfil_salvo.email_contato = usuario_salvo.email
             perfil_salvo.save()
-            print('Conta criada com sucesso!')
-            messages.success(request, 'Conta criada com sucesso!')
             return redirect('/')
         else:
             mensagem = "Cadastro não realizado!"
@@ -157,53 +155,87 @@ def logout_view(request):
 class UserPasswordChangeView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = UserPasswordChangeForm
+    
+def get_base_template(user):
+    try:
+        empresa_anonimo = Empresa.objects.get(login_mapeamento=user)  # se o login esta no cadastro de empresas, significa que é um preenchimento anônimo
+    except:
+        empresa_anonimo = None
+        
+    if empresa_anonimo or not user.is_authenticated:
+        base_template = "layouts/base-fullscreen.html"
+    else:
+        base_template = "layouts/base.html"
+    
+    return base_template
+
   
 @login_required
 def mapeamento(request, id):
-    questionario = get_object_or_404(Questionario, pk=id)
-    post_data = request.POST if request.method == "POST" else None
-    form = QuestionarioForm(questionario, post_data)
-
-    try:
-        empresa = Empresa.objects.get(login_mapeamento=request.user)
-        base_template = "layouts/base-fullscreen.html"
-    except:
-        # esta parte ainda precisa ser pensada, no caso do preenchimento individual identificado pelo login da pessoa
-        empresa = {}
-        base_template = "layouts/base.html"
-
     
-    url = reverse("mapeamento", args=[id])
+    if request.method == "POST": 
+        codigo = request.POST.get('codigo_ativacao')
+        try:
+            codigoativacao = get_object_or_404(CodigoAtivacao, codigo=codigo)
+        except:
+            codigoativacao = None
+        post_data = request.POST
+    else: 
+        post_data = None
+        codigo = request.GET.get('codigo_ativacao') # ao montar o questionário, precisa do código de ativação para enviar no POST
+        codigoativacao = None 
+        
+    questionario = get_object_or_404(Questionario, pk=id)
+    form = RespostaMapeamentoForm(questionario, codigoativacao, request.user, post_data)
+
+    base_template = get_base_template(request.user)
+    
     if form.is_bound and form.is_valid():
-        form.save()
-        messages.add_message(request, messages.INFO, 'Envio salvo.')
+        resposta = form.save()
+        
+        if resposta.mapeamento:
+            if request.user == resposta.mapeamento.empresa.login_mapeamento: 
+                logout(request)
+        url = reverse("mapeamento_encerramento")
         return redirect(url)
         
     context = {
         "segment": "mapeamento",
         "questionario": questionario,
         "form": form,
-        "empresa": empresa,
         "base_template": base_template,
+        "codigo_ativacao": codigo,
     }
     return render(request, 'mapeamento.html', context)
 
+from urllib.parse import urlencode
+
 def mapeamento_empresa(request):
     
-    codigo_ativacao = request.POST.get('codigo_empresa')
+    codigo_ativacao = request.POST.get('codigo_ativacao')
     questionario    = request.POST.get('escolhaQuestionario')
     
     if request.method == 'POST':
         
         if codigo_ativacao and questionario:
-            codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
+            codigo = CodigoAtivacao.objects.get(codigo=codigo_ativacao)
+            mapeamento = MapeamentoAtivacao.objects.get(codigo_ativacao=codigo).mapeamento
+            
             if not request.user.is_authenticated:
-                user = codigo.empresa.login_mapeamento
+                user = mapeamento.empresa.login_mapeamento
                 if user and user.is_active:
-                    login(request, user)    
+                    login(request, user)   
                 else:
                     raise PermissionDenied()
-            return redirect('mapeamento', id=questionario)
+                
+            parameters = {
+                'codigo_ativacao': codigo_ativacao,
+            }
+            query = urlencode(parameters)
+            redirect_url = reverse('mapeamento',  kwargs={'id':questionario})
+            redirect_url_with_parameters = f'{redirect_url}?{query}'    
+ 
+            return redirect(redirect_url_with_parameters)
     
     context = {
         "segment": "Mapeamento Empresa",
@@ -214,15 +246,20 @@ def lista_questionarios(request):
     template_name = 'partials/lista_questionarios_empresa.html'    
     nome_empresa = 'Não localizada'
     questionarios = {}
-    
-    codigo_ativacao = request.POST.get('codigo_empresa')   
-    
+    codigo_ativacao = request.POST.get('codigo_ativacao')   
     try:
-        codigo = CodigoAtivacao.objects.get(codigo=int(codigo_ativacao))
-        nome_empresa = codigo.empresa
-        questionarios = codigo.empresa.questionarios.all()      # type: ignore
+        codigo = CodigoAtivacao.objects.get(codigo=codigo_ativacao)
+        mapeamento = MapeamentoAtivacao.objects.get(codigo_ativacao=codigo).mapeamento
+        nome_empresa = mapeamento.empresa
+        
+        if mapeamento.empresa.login_mapeamento:        
+            questionarios = mapeamento.questionarios.all()      
+        else:
+            messages.add_message(request, messages.WARNING, 'Empresa não está liberada para realizar o mapeamento.')                           
+        
     except:
-        nome_empresa = 'Código de Ativação não identificado'  
+        nome_empresa = 'Código de Ativação não identificado'
+        messages.add_message(request, messages.WARNING, 'Por gentileza confira se o código de ativação informado está correto')                           
      
     context = {
         "empresa": nome_empresa,
@@ -241,3 +278,15 @@ def confirmacao_questionario(request):
     }
 
     return render(request, template_name, context)
+
+def mapeamento_encerramento(request):
+    template_name = 'mapeamento_final.html'
+
+    base_template = get_base_template(request.user)
+
+    context = {
+        "segment": "mapeamento",
+        "base_template": base_template,
+    }
+    
+    return render(request,template_name, context)

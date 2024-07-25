@@ -10,6 +10,10 @@
 <head>
 
   {% include 'includes/head.html' %}
+  <title>
+    Mapse | {% block title %}{% endblock title %}
+  </title>
+
   {% block extrahead %}{% endblock extrahead %}
   {% block extrastyle %}{% endblock extrastyle %}
 
@@ -22,11 +26,13 @@
     {% block content %}{% endblock content %}
   </main>
 
-  <!--   Core JS Files   -->
+  {% block footer %}{% endblock footer %}
+
   {% include "includes/scripts.html" %}
 
   <!-- Specific JS goes HERE --> 
   {% block scripts %}{% endblock scripts %}
+  
   <script src="https://unpkg.com/htmx.org@2.0.0"></script>
   <script>
       var win = navigator.platform.indexOf('Win') > -1;

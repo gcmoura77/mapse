@@ -1,108 +1,123 @@
 {% extends 'layouts/base-fullscreen.html' %}
 {% load i18n static admin_material %}
 
+
+{% block extrastyle %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+{% endblock extrastyle %}
+
 {% block content %}
 
-  <main class="main-content  mt-0">
-    <div class="page-header align-items-start min-vh-100" style="background-image: url({% static 'img/fundologin.png' %});">
-      <!-- <span class="mask bg-gradient-dark opacity-6"></span> -->
-      <div class="container my-auto">
-        <div class="row">
-          <div class="col-lg-4 col-md-8 col-12 mx-auto">
-            <div class="card z-index-0 fadeIn3 fadeInBottom">
-              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Mapse - Admin</h4>
-                  <div class="row mt-3">
-                    <div class="col-2 text-center ms-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-facebook text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center px-1">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-github text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center me-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-google text-white text-lg"></i>
-                      </a>
-                    </div>
+  <div class="page-header align-items-start min-vh-100" style="background-image: url({% static 'img/fundologin.png' %});">
+    <div class="container my-auto">
+      <div class="row">
+        <div class="col-lg-4 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">MAPSE - Admin</h4>
+                <div class="row mt-3">
+                  <div class="col-2 text-center ms-auto">
+                    <a class="btn btn-link px-3" href="javascript:;">
+                      <i class="fa fa-facebook text-white text-lg"></i>
+                    </a>
+                  </div>
+                  <div class="col-2 text-center px-1">
+                    <a class="btn btn-link px-3" href="javascript:;">
+                      <i class="fa fa-github text-white text-lg"></i>
+                    </a>
+                  </div>
+                  <div class="col-2 text-center me-auto">
+                    <a class="btn btn-link px-3" href="javascript:;">
+                      <i class="fa fa-google text-white text-lg"></i>
+                    </a>
                   </div>
                 </div>
               </div>
-              <div class="card-body">
-                <form method="post" role="form" class="text-start" action="{{ app_path }}">
-                  {% csrf_token %}
-                  <div class="input-group input-group-outline my-3">
-                    <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
-                    <input 
-                      type="text" 
-                      class="form-control"
-                      name="{{ form.username.name }}"
-                      id="{{ form.username.id_for_label }}"
-                    >
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
-                    <input 
-                      type="password" 
-                      class="form-control"
-                      name="{{ form.password.name }}"
-                      id="{{ form.password.id_for_label }}"
-                    >
-                  </div>
-                  <div class="form-check form-switch d-flex align-items-center mb-3">
-                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                    <label class="form-check-label mb-0 ms-3" for="rememberMe">Lembre-me</label>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Entrar</button>
-                  </div>
-                  <p class="mt-4 text-sm text-center">
-                    Não tem cadastro ainda?
-                    <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Cadastrar</a>
-                  </p>
-                </form>
-              </div>
+            </div>
+            <div class="card-body">
+              <form method="post" role="form" class="text-start" action="{{ app_path }}">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                  {% for error in form.non_field_errors %}
+                    <small class="text-danger">{{ error }}</small>
+                  {% endfor %}
+                {% endif %}
+                
+                <div class="input-group input-group-outline my-3">
+                  <label for="{{ form.username.id_for_label }}" class="form-label">Conta</label>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    name="{{ form.username.name }}"
+                    id="{{ form.username.id_for_label }}"
+                    autocomplete="on"
+                  >
+                </div>
+                <div class="input-group input-group-outline mb-3">
+                  <label for="{{ form.password.id_for_label }}" class="form-label">Senha</label>
+                  <input 
+                    type="password" 
+                    class="form-control"
+                    name="{{ form.password.name }}"
+                    id="{{ form.password.id_for_label }}"
+                  >
+                </div>
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                  <label class="form-check-label mb-0 ms-3" for="rememberMe">Lembre-me</label>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Entrar</button>
+                </div>
+                <p class="mt-4 text-sm text-center">
+                  Não tem cadastro ainda?
+                  <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Cadastrar</a>
+                </p>
+              </form>
             </div>
           </div>
         </div>
       </div>
-        {% include 'includes/footer-fullscreen.html' %}
     </div>
-  </main>
+  </div>
 
 {% endblock content %}
 
-{% block extrascript %}
-    <script type="application/javascript">
-        {% if form.username.errors %}
-            notification.danger("{{ form.username.errors }}", 'top', 'right');
-        {% endif %}
-        {% if form.password.errors %}
-            notification.danger("{{ form.password.errors }}", 'top', 'right');
-        {% endif %}
+{% block footer %}
+{% include 'includes/footer-fullscreen.html' %}
+{% endblock footer %}
 
-        {% if user.is_authenticated %}
-            var msg = "You are authenticated as {{ username }}, but are not authorized to " +
-                "access this page.Would you like to login to a different account ?"
-            notification.warning(msg, 'top', 'right');
-        {% endif %}
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script src="{% static 'js/scripts.js' %}"></script>
 
-        {% if form.errors and not form.non_field_errors %}
-            {% if form.errors.items|length == 1 %}
-                notification.warning("{% trans "Please correct the error below." %}", 'top', 'right');
-            {% else %}
-                notification.warning("{% trans "Please correct the errors below." %}", 'top', 'right');
-            {% endif %}
-        {% endif %}
+  <script type="application/javascript">
+      {% if form.username.errors %}
+          notification.danger("{{ form.username.errors }}", 'top', 'right');
+      {% endif %}
+      {% if form.password.errors %}
+          notification.danger("{{ form.password.errors }}", 'top', 'right');
+      {% endif %}
 
-        {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}
-                notification.warning("{{ error|clean_text }}", 'top', 'right');
-            {% endfor %}
-        {% endif %}
-    </script>
-{% endblock %}
+      {% if user.is_authenticated %}
+          var msg = "Você está autenticado com a conta {{ username }}, mas não está autorizado para " +
+              "acessar esta página. Você gostaria de acessar com uma conta diferente ?"
+          notification.warning(msg, 'top', 'right');
+      {% endif %}
+
+      {% if form.errors and not form.non_field_errors %}
+          {% if form.errors.items|length == 1 %}
+              notification.warning("{% trans "Por favor, corrija o erro abaixo." %}", 'top', 'right');
+          {% else %}
+              notification.warning("{% trans "Por favor, corrija o erro abaixo." %}", 'top', 'right');
+          {% endif %}
+      {% endif %}
+
+      {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+              notification.warning("{{ error|clean_text }}", 'top', 'right');
+          {% endfor %}
+      {% endif %}
+  </script>
+{% endblock scripts %}
