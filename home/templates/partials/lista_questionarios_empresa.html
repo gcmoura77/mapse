@@ -5,13 +5,22 @@
         {% else %}
             <div class="col-md-12 col-sm-12 ms-auto">
         {% endif %}
-            <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck{{forloop.counter}}" value="{{questionario.questionario.id}}">
+            <input type="radio" class="btn-check" name="escolhaQuestionario" id="btncheck{{forloop.counter}}" value="{{questionario.id}}">
             <label class="btn btn-lg btn-outline-primary border-2 px-6 py-5" for="btncheck{{forloop.counter}}">
-                {{questionario.questionario.nome}}
+                {{questionario.nome}}
             </label>
-            <p class="text-xs px-6" >{{questionario.questionario.descricao}}</p>
+            <p class="text-xs px-6" >{{questionario.descricao}}</p>
         </div>
     {% endfor %}
+    {% if messages %}
+        <div class="row">
+            <div class="alert alert-secondary text-white font-weight-bold " role="alert">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 <h4 class="font-weight-normal" id="nome_empresa" hx-swap-oob="true">{{ empresa }}</h4>

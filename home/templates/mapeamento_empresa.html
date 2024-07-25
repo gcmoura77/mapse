@@ -1,6 +1,8 @@
 {% extends 'layouts/base-fullscreen.html' %}
 {% load static %}
 
+{% block title %} Mapeamento Empresa {% endblock title %}
+
 {% block content %}
 
   <div class="container-fluid py-4">
@@ -118,12 +120,14 @@
         </div>
       </div>
     </div>
-
-    {% include 'includes/footer.html' %}
-
   </div>
 
 {% endblock content %}
+
+{% block footer %}
+{% include 'includes/footer.html' %}
+{% endblock footer %}
+
 
 {% block scripts %}
 

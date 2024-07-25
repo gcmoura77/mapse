@@ -1,7 +1,10 @@
 from django import forms
+from zmq import NULL
 
-from home.models.questionario import OpcaoEscolha, Questionario
-from .models import Empresa, Pessoa, Especialista, Perfil, Resposta
+from .models import Empresa, Pessoa, Especialista, Perfil
+from home.models.mapeamento_ativacao import MapeamentoAtivacao
+from home.models.questionario import OpcaoEscolha
+from home.models.resposta import Resposta
 
 class PerfilForm(forms.ModelForm):
     
@@ -80,13 +83,16 @@ class EmpresaForm(forms.ModelForm):
             }),
         }
     
-class QuestionarioForm(forms.Form):
-    questao_1 = forms.ChoiceField(widget=forms.RadioSelect, choices=())
+class RespostaMapeamentoForm(forms.Form):
 
-    def __init__(self, questionario, *args, **kwargs):
+    def __init__(self, questionario, codigoativacao, participante, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.questionario = questionario
-        del self.fields["questao_1"]
+        self.codigoativacao = codigoativacao
+        if codigoativacao:
+            self.mapeamento = MapeamentoAtivacao.objects.get(codigo_ativacao=codigoativacao).mapeamento
+            
+        self.participante = participante
         for questao in questionario.questao_set.all():
             opcoesescolha = [(opcaoescolha.id, opcaoescolha.descricao) for opcaoescolha in questao.opcaoescolha_set.all()]
             self.fields[f"questao_{questao.id}"] = forms.ChoiceField(widget=forms.RadioSelect, choices=opcoesescolha)
@@ -95,10 +101,18 @@ class QuestionarioForm(forms.Form):
     def save(self):
       data = self.cleaned_data
       resposta = Resposta(questionario=self.questionario)
+      resposta.participante=self.participante
+      # verificar quais as respostas que foram preenchidas se todas estiverem ok, Respondida, caso contrário Incompleto
+      resposta.situacao = Resposta.SituacaoResposta.Respondido 
+      
+      if self.codigoativacao:
+          resposta.codigo_ativacao = self.codigoativacao
+          resposta.mapeamento = self.mapeamento
+          
       resposta.save()
       for questao in self.questionario.questao_set.all():
           opcaoescolha = OpcaoEscolha.objects.get(pk=data[f"questao_{questao.id}"])
-          resposta.resposta.add(opcaoescolha)
+          resposta.respostas.add(opcaoescolha)
       
       resposta.save()
       return resposta          

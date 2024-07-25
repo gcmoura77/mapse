@@ -59,7 +59,7 @@ class QuestaoAdmin(admin.ModelAdmin):
 
 @admin.register(Resposta)
 class RespostaAdmin(admin.ModelAdmin):
-    list_display = ("data_resposta", "situacao", "pessoa")
+    list_display = ("data_resposta", "situacao", "participante")
     
 admin.site.register(OpcaoEscolha)
 
