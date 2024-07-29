@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "home",
+    "apps.pages",
 ]
 
 MIDDLEWARE = [
@@ -68,13 +69,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "core.urls"
 
-UI_TEMPLATES = os.path.join(BASE_DIR, 'templates')
-HOME_TEMPLATES = os.path.join(BASE_DIR, 'home/templates')
+TEMPLATES = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [UI_TEMPLATES,HOME_TEMPLATES],
+        "DIRS": [TEMPLATES,],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -166,7 +166,7 @@ STATICFILES_DIRS = (
 ############################ Media Files' Settings ############################
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ############################ Others Settings ############################
 

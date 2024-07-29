@@ -9,11 +9,11 @@
       <a href="/"><span class="nav-link-text ms-1 text-white">Exemplos de Tela</span></a>
     </span>
   </span>
-  <div class="multi-level ms-5 collapse {% if segment in 'tables,billing,notification,profile' %} show {% endif %}" role="list" id="submenu-exemplos" aria-expanded="false">
+  <div class="multi-level ms-5 collapse {% if segment in 'tables,billing,notification,profile,typography' %} show {% endif %}" role="list" id="submenu-exemplos" aria-expanded="false">
     <ul class="flex-column nav">
 
       <li class="nav-item">
-        <a class="nav-link {% if 'tables' in segment %} active {% endif %} " href="{% url 'tables' %}">
+        <a class="nav-link {% if 'tables' in segment %} active {% endif %} " href="{% url 'pages:tables' %}">
           <div class="text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">table_view</i>
           </div>
@@ -21,7 +21,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {% if 'billing' in segment %} active {% endif %} " href="{% url 'billing' %}">
+        <a class="nav-link {% if 'billing' in segment %} active {% endif %} " href="{% url 'pages:billing' %}">
           <div class="text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">receipt_long</i>
           </div>
@@ -29,7 +29,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link  {% if 'notification' in segment %} active {% endif %} " href="{% url 'notification' %}">
+        <a class="nav-link  {% if 'notification' in segment %} active {% endif %} " href="{% url 'pages:notification' %}">
           <div class="text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">notifications</i>
           </div>
@@ -37,17 +37,24 @@
         </a>
       </li>
       <li class="nav-item mt-3">
-        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Páginas de Contas</h6>
+        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Exemplo Divisão</h6>
       </li>
       <li class="nav-item">
-        <a class="nav-link {% if 'profile' in segment %} active {% endif %} " href="{% url 'profile' %}">
+        <a class="nav-link {% if 'profile' in segment %} active {% endif %} " href="{% url 'pages:profile' %}">
           <div class="text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">person</i>
           </div>
           <span class="nav-link-text ms-1">Profile</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'typography' in segment %} active {% endif %} " href="{% url 'pages:typography' %}">
+          <div class="text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <span class="nav-link-text ms-1">Typography</span>
+        </a>
+      </li>
     </ul>
   </div>
-
 </li>

@@ -1,0 +1,50 @@
+.
+├── apps
+│   └── pages
+├── core
+│   └── __pycache__
+├── home
+│   ├── migrations
+│   │   └── __pycache__
+│   ├── models
+│   │   └── __pycache__
+│   └── __pycache__
+├── images
+│   └── perfil
+├── nginx
+├── static
+│   ├── css
+│   ├── fonts
+│   ├── img
+│   │   ├── icons
+│   │   │   └── flags
+│   │   ├── illustrations
+│   │   ├── logos
+│   │   │   └── gray-logos
+│   │   ├── products
+│   │   ├── shapes
+│   │   └── small-logos
+│   ├── js
+│   │   ├── core
+│   │   └── plugins
+│   │       ├── amcharts
+│   │       ├── dragula
+│   │       └── jkanban
+│   ├── node_modules
+│   │   └── ...
+│   └── scss
+│       └── ...
+└── templates
+    ├── admin
+    │   ├── auth
+    │   │   └── user
+    │   ├── edit_inline
+    │   └── includes
+    ├── home
+    ├── pages
+    ├── accounts
+    ├── includes
+    ├── layouts
+    ├── mapeamento
+    └── registration
+

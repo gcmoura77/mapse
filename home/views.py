@@ -3,10 +3,8 @@ from django.contrib.auth.decorators import login_required
 from admin_material.forms import RegistrationForm, LoginForm, UserPasswordResetForm, UserPasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout, login
 from django.core.exceptions import PermissionDenied
-
-from home.models import codigo_ativacao
 
 from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao, MapeamentoAtivacao
 from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, RespostaMapeamentoForm
@@ -16,7 +14,7 @@ from django.urls import reverse
 # Create your views here.
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home/home.html')
 
 def index(request):
     return render(request, 'index.html')
@@ -66,23 +64,6 @@ def register(request, perfil='pessoa'):
     return render(request, 'accounts/register.html', context)
 
 @login_required
-def dashboard(request):
-    # Page from the theme 
-    return render(request, 'pages/index.html')
-
-@login_required
-def billing(request):
-    return render(request, 'pages/billing.html', { 'segment': 'billing' })
-
-@login_required
-def tables(request):
-    return render(request, 'pages/tables.html', { 'segment': 'tables' })
-
-@login_required
-def notification(request):
-    return render(request, 'pages/notifications.html', { 'segment': 'notification' })
-
-@login_required
 def profile(request):
     perfil = Perfil.objects.get(login = request.user)
 
@@ -120,7 +101,7 @@ def profile(request):
                 'subtitulo': subtitulo,
                 'imageURL': imagem_perfil,
             }
-    return render(request, 'profile.html', context)
+    return render(request, 'home/profile.html', context)
 
 @login_required
 def profile_edit(request):
@@ -136,7 +117,7 @@ def profile_edit(request):
             'descricao': 'perfil.descricao',
             'subtitulo': 'subtitulo',
         }
-    return render(request, 'profile.html', context)
+    return render(request, 'home/profile.html', context)
 
 
 # Authentication
@@ -206,7 +187,7 @@ def mapeamento(request, id):
         "base_template": base_template,
         "codigo_ativacao": codigo,
     }
-    return render(request, 'mapeamento.html', context)
+    return render(request, 'mapeamento/mapeamento.html', context)
 
 from urllib.parse import urlencode
 
@@ -240,10 +221,10 @@ def mapeamento_empresa(request):
     context = {
         "segment": "Mapeamento Empresa",
     }
-    return render(request, 'mapeamento_empresa.html', context)
+    return render(request, 'mapeamento/mapeamento_empresa.html', context)
 
 def lista_questionarios(request):
-    template_name = 'partials/lista_questionarios_empresa.html'    
+    template_name = 'mapeamento/lista_questionarios_empresa.html'    
     nome_empresa = 'Não localizada'
     questionarios = {}
     codigo_ativacao = request.POST.get('codigo_ativacao')   
@@ -269,7 +250,7 @@ def lista_questionarios(request):
     return render(request, template_name, context)
 
 def confirmacao_questionario(request):
-    template_name = 'partials/confirmacao_questionario.html'
+    template_name = 'mapeamento/confirmacao_questionario.html'
     questionario = get_object_or_404(Questionario, pk=request.POST.get('escolhaQuestionario'))
     
     context = { 
@@ -280,7 +261,7 @@ def confirmacao_questionario(request):
     return render(request, template_name, context)
 
 def mapeamento_encerramento(request):
-    template_name = 'mapeamento_final.html'
+    template_name = 'mapeamento/mapeamento_final.html'
 
     base_template = get_base_template(request.user)
 
