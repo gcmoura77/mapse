@@ -99,22 +99,22 @@ class RespostaMapeamentoForm(forms.Form):
             self.fields[f"questao_{questao.id}"].label = questao.descricao
           
     def save(self):
-      data = self.cleaned_data
-      resposta = Resposta(questionario=self.questionario)
-      resposta.participante=self.participante
-      # verificar quais as respostas que foram preenchidas se todas estiverem ok, Respondida, caso contrário Incompleto
-      resposta.situacao = Resposta.SituacaoResposta.Respondido 
+        data = self.cleaned_data
+        resposta = Resposta(questionario=self.questionario)
+        resposta.participante=self.participante
+        # verificar quais as respostas que foram preenchidas se todas estiverem ok, Respondida, caso contrário Incompleto
+        resposta.situacao = Resposta.SituacaoResposta.Respondido 
       
-      if self.codigoativacao:
-          resposta.codigo_ativacao = self.codigoativacao
-          resposta.mapeamento = self.mapeamento
+        if self.codigoativacao:
+            resposta.codigo_ativacao = self.codigoativacao
+            resposta.mapeamento = self.mapeamento
           
-      resposta.save()
-      for questao in self.questionario.questao_set.all():
-          opcaoescolha = OpcaoEscolha.objects.get(pk=data[f"questao_{questao.id}"])
-          resposta.respostas.add(opcaoescolha)
-      
-      resposta.save()
-      return resposta          
+        resposta.save()
+        for questao in self.questionario.questao_set.all():
+            opcaoescolha = OpcaoEscolha.objects.get(pk=data[f"questao_{questao.id}"])
+            resposta.respostas.add(opcaoescolha)
+        
+        resposta.save()
+        return resposta          
   
   

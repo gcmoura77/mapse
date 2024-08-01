@@ -1,67 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from admin_material.forms import RegistrationForm, LoginForm, UserPasswordResetForm, UserPasswordChangeForm
 from django.contrib import messages
-from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout, login
 from django.core.exceptions import PermissionDenied
+from django.urls import reverse
+from urllib.parse import urlencode
 
 from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao, MapeamentoAtivacao
-from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm, RespostaMapeamentoForm
-
-from django.urls import reverse
+from .forms import PerfilForm, RespostaMapeamentoForm
 
 # Create your views here.
+def index(request):
+    # return render(request, 'index.html')
+    return render(request, 'index.html')
+
 @login_required
 def home(request):
     return render(request, 'home/home.html')
-
-def index(request):
-    return render(request, 'index.html')
-
-def register(request, perfil='pessoa'):    
-    
-    mensagem = ""
-    if request.method == 'POST':
-        reg_form = RegistrationForm(request.POST)
-        base_perfil_form = PerfilForm(request.POST)
-        if perfil == 'empresa':
-            perfil_form = EmpresaForm(request.POST)
-        elif perfil == 'especialista':
-            perfil_form = EspecialistaForm(request.POST)
-        else:
-            perfil_form = PessoaForm(request.POST)
-
-        if all([reg_form.is_valid(), base_perfil_form.is_valid(), perfil_form.is_valid]):
-            usuario_salvo = reg_form.save()
-            base_perfil_salvo = base_perfil_form.save(commit=False)
-            base_perfil_salvo.tipo_perfil = perfil.capitalize()
-            base_perfil_salvo.login = usuario_salvo
-            base_perfil_salvo.save()
-            perfil_salvo = perfil_form.save(commit=False)
-            perfil_salvo.perfil = base_perfil_salvo
-            perfil_salvo.email_contato = usuario_salvo.email
-            perfil_salvo.save()
-            return redirect('/')
-        else:
-            mensagem = "Cadastro não realizado!"
-            print('Cadastro não realizado!')
-    else:
-        reg_form = RegistrationForm()
-        base_perfil_form = PerfilForm()
-        if perfil == 'empresa':
-            perfil_form = EmpresaForm()
-        elif perfil == 'especialista':
-            perfil_form = EspecialistaForm()
-        else:
-            perfil_form = PessoaForm()
-
-    context = { 'form': reg_form, 
-                'perfil':perfil, 
-                'base_perfil_form': base_perfil_form,
-                'perfil_form': perfil_form,
-                'msg': mensagem }    
-    return render(request, 'accounts/register.html', context)
 
 @login_required
 def profile(request):
@@ -119,24 +74,6 @@ def profile_edit(request):
         }
     return render(request, 'home/profile.html', context)
 
-
-# Authentication
-class UserLoginView(LoginView):
-    template_name = 'accounts/login.html'
-    form_class = LoginForm
-  
-class UserPasswordResetView(PasswordResetView):
-    template_name = 'accounts/password_reset.html'
-    form_class = UserPasswordResetForm
-  
-def logout_view(request):
-    logout(request)
-    return redirect('/accounts/login/')
-
-class UserPasswordChangeView(PasswordChangeView):
-    template_name = 'accounts/password_change.html'
-    form_class = UserPasswordChangeForm
-    
 def get_base_template(user):
     try:
         empresa_anonimo = Empresa.objects.get(login_mapeamento=user)  # se o login esta no cadastro de empresas, significa que é um preenchimento anônimo
@@ -149,7 +86,6 @@ def get_base_template(user):
         base_template = "layouts/base.html"
     
     return base_template
-
   
 @login_required
 def mapeamento(request, id):
@@ -188,8 +124,6 @@ def mapeamento(request, id):
         "codigo_ativacao": codigo,
     }
     return render(request, 'mapeamento/mapeamento.html', context)
-
-from urllib.parse import urlencode
 
 def mapeamento_empresa(request):
     
