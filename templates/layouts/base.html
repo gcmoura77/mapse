@@ -11,7 +11,7 @@
 
   {% include 'includes/head.html' %}
   <title>
-    Mapse | {% block title %}{% endblock title %}
+    {% if debug %}DESENV - {% endif %}Mapse | {% block title %}{% endblock title %}
   </title>
   
   {% block extrahead %}{% endblock extrahead %}
