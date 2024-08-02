@@ -72,7 +72,7 @@
                 </div>
                 <p class="mt-4 text-sm text-center">
                   Não tem cadastro ainda?
-                  <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Cadastrar</a>
+                  <a href="{% url 'accounts:register' %}" class="text-primary text-gradient font-weight-bold">Cadastrar</a>
                 </p>
               </form>
             </div>
@@ -89,9 +89,6 @@
 {% endblock footer %}
 
 {% block scripts %}
-  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-  <script src="{% static 'js/scripts.js' %}"></script>
-
   <script type="application/javascript">
       {% if form.username.errors %}
           notification.danger("{{ form.username.errors }}", 'top', 'right');

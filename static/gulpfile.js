@@ -15,6 +15,7 @@ var sass = require('gulp-sass')(require('node-sass'));
 var wait = require('gulp-wait');
 var sourcemaps = require('gulp-sourcemaps');
 var rename = require("gulp-rename");
+const uglify = require('gulp-uglify');
 
 // Define COMMON paths
 
@@ -24,7 +25,8 @@ const paths = {
         css: './css',
         scss: './scss',
         node_modules: './node_modules/',
-        vendor: './vendor'
+        vendor: './vendor',
+        js: './js'
     }
 };
 
@@ -68,5 +70,15 @@ gulp.task('minify:css', function() {
         .pipe(gulp.dest(paths.src.css))
 });
 
+// Minify JS
+gulp.task('minify-js', function() {
+    return gulp.src([paths.src.js + '/material-dashboard.js'])  
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(sourcemaps.write('.'))  // Escreve o .map no mesmo diretório que o arquivo .min.js
+        .pipe(gulp.dest(paths.src.js));  
+});
+
 // Default Task: Compile SCSS and minify the result
-gulp.task('default', gulp.series('scss', 'minify:css'));
+gulp.task('default', gulp.series('scss', 'minify:css', 'minify-js'));

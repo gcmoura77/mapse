@@ -76,7 +76,7 @@
                   {% if request.user.is_superuser %}
                     <a href="{% url 'admin:password_change' %}" class="btn bg-gradient-primary">
                   {% else %}
-                    <a href="{% url 'password_change' %}" class="btn bg-gradient-primary">
+                    <a href="{% url 'accounts:password_change' %}" class="btn bg-gradient-primary">
                   {% endif %}
                       <i class="fa fa-exchange d-sm-inline-flex d-none me-sm-1"></i>
                       Alterar senha

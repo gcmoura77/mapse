@@ -126,7 +126,7 @@
           {% if request.user.is_superuser %}
           <a href="{% url 'admin:logout' %}" class="nav-link text-body px-0" title="Sair">
           {% else %}
-          <a href="{% url 'logout' %}" class="nav-link text-body px-0" title="Sair">
+          <a href="{% url 'accounts:logout' %}" class="nav-link text-body px-0" title="Sair">
           {% endif %}
             <i class="fa fa-sign-out me-sm-1"></i>
             <span class="d-sm-inline-flex d-none me-3">Sair</span>
