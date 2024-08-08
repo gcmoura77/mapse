@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from admin_material.forms import RegistrationForm, LoginForm, UserPasswordResetForm, UserPasswordChangeForm
 from django.contrib.auth.views import LoginView, PasswordResetView,  PasswordChangeView
 from django.contrib.auth import logout
-from home.forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm
+from .forms import EmpresaForm, EspecialistaForm, PessoaForm, PerfilForm
 
 def register(request, perfil='pessoa'):    
     

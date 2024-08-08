@@ -7,7 +7,7 @@ from django.urls import reverse
 from urllib.parse import urlencode
 
 from .models import Perfil, Empresa, Especialista, Pessoa, Questionario, CodigoAtivacao, MapeamentoAtivacao
-from .forms import PerfilForm, RespostaMapeamentoForm
+from .forms import PerfilForm, RespostaMapeamentoForm, EmpresaForm, PessoaForm, EspecialistaForm
 
 # Create your views here.
 def index(request):
@@ -20,41 +20,33 @@ def home(request):
 
 @login_required
 def profile(request):
-    perfil = Perfil.objects.get(login = request.user)
 
-    if perfil.tipo_perfil == 'Empresa':
-        perfil_especifico = Empresa.objects.get(perfil=perfil)
-        subtitulo = perfil_especifico.razao_social
-    elif perfil.tipo_perfil == 'Pessoa':
-        perfil_especifico = Pessoa.objects.get(perfil=perfil)
-        subtitulo = perfil_especifico.titulo
-    else:
-        perfil_especifico = Especialista.objects.get(perfil=perfil)
-        subtitulo = f'{perfil_especifico.conselho_profissional} {str(perfil_especifico.numero_conselho)}'
-
+    tipo_perfil = request.user.perfil.tipo_perfil
     if request.method == 'POST':
-        form = PerfilForm(request.POST, instance=perfil)
+
+        form = PerfilForm(request.POST, instance=request.user.perfil)
         if form.is_valid():
             form.save()    
             return redirect('profile/')
-    
-    if perfil.imagem:
-        imagem_perfil = perfil.imagem.url
     else:
-        imagem_perfil = '/static/img/perfil-no-fundo-branco-vetor.jpg'
+        perfil_form = PerfilForm(instance=request.user.perfil)
+        if tipo_perfil == 'Empresa':
+            perfil_generico = EmpresaForm(instance=request.user.perfil.empresa)
+        elif tipo_perfil == 'Pessoa':
+            perfil_generico = PessoaForm(instance=request.user.perfil.pessoa)
+        else:
+            perfil_generico = EspecialistaForm(instance=request.user.perfil.especialista)
+            
+        if request.user.perfil.imagem:
+            imagem_perfil = request.user.perfil.imagem.url
+        else:
+            imagem_perfil = '/static/img/perfil-no-fundo-branco-vetor.jpg'
         
     context = { 'segment': 'perfil',
-                'tipo_perfil': perfil.tipo_perfil, 
-                'nome': perfil.nome, 
-                'celular': perfil_especifico.celular,
-                'email_contato': perfil_especifico.email_contato,
-                'cidade': perfil_especifico.cidade,
-                'facebook': perfil_especifico.facebook,
-                'x_twitter': perfil_especifico.x_twitter,
-                'instagram': perfil_especifico.instagram,
-                'descricao': perfil.descricao,
-                'subtitulo': subtitulo,
+                'tipo_perfil': tipo_perfil, 
                 'imageURL': imagem_perfil,
+                'perfil_form': perfil_form,
+                'perfil_generico': perfil_generico,
             }
     return render(request, 'home/profile.html', context)
 

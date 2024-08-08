@@ -10,21 +10,24 @@
       <div class="row gx-4 mb-2">
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
-            {% comment %} <img src="{% static 'img/bruce-mars.jpg' %}" alt="profile_image" class="w-100 border-radius-lg shadow-sm"> {% endcomment %}
-            <img src="{{ imageURL }}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-            
+            <img src="{{ MEDIA_URL }}{{ perfil_form.imagem.value }}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
           </div>
         </div>
         <div class="col-auto my-auto">
           <div class="h-100">
             <h5 class="mb-1">
               <div class="input-group input-group-outline mb-3">
-                {{ nome }}
+                {{ perfil_form.nome.value }}
               </div>
-              
             </h5>
             <p class="mb-0 font-weight-normal text-sm">
-              {{ subtitulo }}
+              {% if tipo_perfil == 'Pessoa'%}
+                {{ perfil_generico.titulo.value}}
+              {% elif tipo_perfil == 'Especialista' %}
+                {{perfil_generico.conselho_profissional.value}} {{perfil_generico.numero_conselho.value}}
+              {% else %}
+                {{ perfil_generico.razao_social.value}}
+              {% endif %}
             </p>
           </div>
         </div>
@@ -51,23 +54,23 @@
             </div>
             <div class="card-body p-3">
               <p class="text-sm">
-                {{ descricao }}
+                {{ perfil_form.descricao.value }}
               </p>
               <hr class="horizontal gray-light my-4">
               <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Nome Completo:</strong> &nbsp; {{ nome }}</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Celular:</strong> &nbsp; {{ celular }}</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">E-mail:</strong> &nbsp; {{ email_contato }}</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Cidade:</strong> &nbsp; {{ cidade }}</li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Nome Completo:</strong> &nbsp; {{ perfil_form.nome.value }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Celular:</strong> &nbsp; {{ perfil_generico.celular.value }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">E-mail:</strong> &nbsp; {{ perfil_generico.email_contato.value }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Cidade:</strong> &nbsp; {{ perfil_generico.cidade.value }}</li>
                 <li class="list-group-item border-0 ps-0 pb-0">
                   <strong class="text-dark text-sm">Redes Sociais:</strong> &nbsp;
-                  <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="{{ facebook }}" target="_blank">
+                  <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="{{ perfil_generico.facebook.value }}" target="_blank">
                     <i class="fab fa-facebook fa-lg"></i>
                   </a>
-                  <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="{{ x_twitter }}" target="_blank">
+                  <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="{{ perfil_generico.x_twitter.value }}" target="_blank">
                     <i class="fab fa-twitter fa-lg"></i>
                   </a>
-                  <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="{{ instagram }}" target="_blank">
+                  <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="{{ perfil_generico.instagram.value }}" target="_blank">
                     <i class="fab fa-instagram fa-lg"></i>
                   </a>
                 </li>
